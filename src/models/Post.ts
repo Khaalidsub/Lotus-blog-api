@@ -1,10 +1,11 @@
-import {Property} from "@tsed/common";
+import {Property, Format, Default} from "@tsed/common";
 import {Model, ObjectID, VirtualRef} from "@tsed/mongoose";
 import {Category} from "./Category";
 import {User} from "./User";
+import {IModel} from "./IModel";
 
 @Model()
-export class Post {
+export class Post implements IModel {
   @ObjectID("id")
   _id: string;
   @Property()
@@ -13,10 +14,12 @@ export class Post {
   subtitle: string;
   @Property()
   body: string;
-  @Property()
-  createdAt: Date;
-  @Property()
-  updatedAt: Date;
+  @Format("date-time")
+  @Default(Date.now)
+  createdAt: Date = new Date();
+  @Format("date-time")
+  @Default(Date.now)
+  updatedAt: Date = new Date();
   @VirtualRef("Category")
   category: VirtualRef<Category>;
   @VirtualRef("User")
