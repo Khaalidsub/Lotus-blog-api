@@ -1,9 +1,9 @@
 import {Property} from "@tsed/common";
-import {Model, ObjectID} from "@tsed/mongoose";
-import {IModel} from "../services/interfaces";
+import {Model, ObjectID, Ref} from "@tsed/mongoose";
+import {Post} from "./Post";
 
 @Model()
-export class User implements IModel {
+export class User {
   @ObjectID("id")
   _id: string;
 
@@ -13,4 +13,6 @@ export class User implements IModel {
   email: string;
   @Property()
   password: string;
+  @Ref(Post)
+  ref: Ref<Post>;
 }

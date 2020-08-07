@@ -1,10 +1,9 @@
 import {Model, Ref, ObjectID} from "@tsed/mongoose";
 import {Property} from "@tsed/common";
 import {Post} from "./Post";
-import {IModel} from "../services/interfaces";
 
 @Model()
-export class Category implements IModel {
+export class Category {
   @ObjectID("id")
   _id: string;
   @Property()
