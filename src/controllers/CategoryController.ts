@@ -2,7 +2,7 @@ import {Controller, Inject, Delete, Post, Get, PathParams, BodyParams} from "@ts
 import {Category} from "../models/Category";
 import {CategoryService} from "../services/CategoryService";
 
-@Controller("/category")
+@Controller("/categories")
 export class CategoryController {
   constructor(@Inject(CategoryService) private service: CategoryService) {}
   @Get()

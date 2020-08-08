@@ -1,12 +1,14 @@
 import {IService} from "./IService";
 import {MongooseModel} from "@tsed/mongoose";
-import {$log} from "@tsed/common";
+import {Document} from "mongoose";
+import {$log, Post} from "@tsed/common";
 import {IModel} from "../models/IModel";
 
 export class GenericService<T extends IModel> implements IService<T> {
   constructor(public model: MongooseModel<T>) {}
   async add(obj: T) {
     try {
+      $log.info("info", obj);
       const doc = new this.model(obj);
       await doc.save();
       return doc;
@@ -17,16 +19,17 @@ export class GenericService<T extends IModel> implements IService<T> {
   async find(query: any) {
     try {
       const list = await this.model.find(query).exec();
-      $log.info(list);
+
       return list;
     } catch (error) {
       $log.error(error);
     }
   }
 
-  async findById(id: String) {
+  async findById(id: String, populate: String = "") {
     try {
-      const doc = await this.model.findById(id);
+      const doc = await this.model.findById(id).populate(populate);
+
       return doc;
     } catch (error) {
       $log.error(error);

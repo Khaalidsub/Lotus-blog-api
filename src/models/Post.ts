@@ -1,10 +1,11 @@
-import {Property, Format, Default} from "@tsed/common";
-import {Model, ObjectID, VirtualRef} from "@tsed/mongoose";
+import {Property, Default, IgnoreProperty} from "@tsed/common";
+import {Model, ObjectID, Ref, MongoosePlugin} from "@tsed/mongoose";
 import {Category} from "./Category";
 import {User} from "./User";
-import {IModel} from "./IModel";
+import {IModel, autoPopulateAllFields} from "./IModel";
 
 @Model()
+@MongoosePlugin(autoPopulateAllFields)
 export class Post implements IModel {
   @ObjectID("id")
   _id: string;
@@ -14,14 +15,14 @@ export class Post implements IModel {
   subtitle: string;
   @Property()
   body: string;
-  @Format("date-time")
+  @IgnoreProperty()
   @Default(Date.now)
   createdAt: Date = new Date();
-  @Format("date-time")
+  @IgnoreProperty()
   @Default(Date.now)
   updatedAt: Date = new Date();
-  @VirtualRef("Category")
-  category: VirtualRef<Category>;
-  @VirtualRef("User")
-  user: VirtualRef<User>;
+  @Ref(Category)
+  category: Ref<Category>;
+  @Ref(User)
+  user: Ref<User>;
 }
