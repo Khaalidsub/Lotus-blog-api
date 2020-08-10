@@ -6,7 +6,7 @@ export interface IModel {
 
 export function autoPopulateAllFields(schema: any) {
   var paths = "";
-  $log.info("YOOO", schema);
+  // $log.info("YOOO", schema);
   //checks every schema field path
   schema.eachPath(function process(pathname: any, schemaType: any) {
     //if path is the id of the document, no need to check

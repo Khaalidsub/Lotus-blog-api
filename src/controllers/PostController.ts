@@ -1,13 +1,18 @@
-import {Controller, Get, Post, Inject, PathParams, BodyParams, Delete} from "@tsed/common";
+import {Controller, Get, Post, Inject, PathParams, BodyParams, Delete, $log, Session, Req} from "@tsed/common";
 import {Post as Posts} from "../models/Post";
 import {PostService} from "../services/PostService";
+import {Authorize, Authenticate} from "@tsed/passport";
+import {User} from "../models/User";
 
 @Controller("/posts")
 export class PostController {
   constructor(@Inject(PostService) private service: PostService) {}
   @Get()
-  async getAll() {
+  @Authenticate("basic")
+  async getAll(@Req("user") req: User) {
+    $log.info("session", req);
     const posts = await this.service.find({});
+
     return posts;
   }
   @Get("/post/:id")

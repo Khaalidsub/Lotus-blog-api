@@ -10,4 +10,12 @@ export class UserService extends GenericService<User> {
     super(model);
     $log.info(model);
   }
+  async findOne(email: any) {
+    try {
+      return this.model.findOne(email);
+    } catch (error) {
+      $log.error(error);
+      return null;
+    }
+  }
 }

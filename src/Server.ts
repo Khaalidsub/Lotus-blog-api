@@ -10,6 +10,14 @@ import * as cors from "cors";
 import "@tsed/ajv";
 import "@tsed/mongoose";
 import mongooseConfig from "./config/mongoose";
+import mongoConnection from "./config/mongoose/default.config";
+import * as mongoose from "mongoose";
+import * as session from "express-session";
+import * as Mongo from "connect-mongo";
+const MongoStore = Mongo(session);
+
+import {User} from "./models/User";
+import {CreateRequestSessionMiddleware} from "./middlewares/CreateRequestSession";
 
 export const rootDir = __dirname;
 
@@ -18,8 +26,12 @@ export const rootDir = __dirname;
   acceptMimes: ["application/json"],
   httpPort: process.env.PORT || 8083,
   httpsPort: false, // CHANGE
+  componentsScan: [`${rootDir}/protocols/**/*.ts`, `${rootDir}/services/**/*.ts`, `${rootDir}/models/**/*.ts`],
   mount: {
     "/rest": [`${rootDir}/controllers/**/*.ts`],
+  },
+  passport: {
+    userInfoModel: User,
   },
   mongoose: mongooseConfig,
   exclude: ["**/*.spec.ts"],
@@ -32,6 +44,7 @@ export class Server {
   settings: Configuration;
 
   $beforeRoutesInit() {
+    mongoose.connect(mongoConnection.url, mongoConnection.connectionOptions);
     this.app
       .use(cors())
       .use(GlobalAcceptMimesMiddleware)
@@ -43,8 +56,23 @@ export class Server {
         bodyParser.urlencoded({
           extended: true,
         })
-      );
+      )
 
+      .use(
+        session({
+          secret: "chocoLate",
+          resave: true,
+          saveUninitialized: true,
+          store: new MongoStore({mongooseConnection: mongoose.connection}),
+          cookie: {
+            path: "/",
+            httpOnly: true,
+            secure: false,
+            maxAge: 36000 * 60 * 24,
+          },
+        })
+      );
+    this.app.use(CreateRequestSessionMiddleware);
     return null;
   }
 }
