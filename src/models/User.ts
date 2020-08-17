@@ -10,7 +10,7 @@ export class User implements IModel {
   name: string;
   @Property()
   email: string;
-  @IgnoreProperty()
+  @Property()
   password: string;
   verifyPassword(password: string) {
     return this.password === password;

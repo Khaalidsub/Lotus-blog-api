@@ -19,6 +19,7 @@ export function autoPopulateAllFields(schema: any) {
   schema.pre("findOne", handler);
   schema.pre("findById", handler);
   //acts like a loop, it will populate all the field paths that have the option "ref"
+  //TODO : fix the password for users
   function handler(next: any) {
     this.populate(paths);
     next();
