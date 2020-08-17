@@ -32,6 +32,7 @@ export class LoginLocalProtocol implements OnVerify, OnInstall {
       // OR throw new NotAuthorized("Wrong credentials")
     }
     sessionUser = user;
+    sessionUser.password = "";
     $log.info("logged:", sessionUser);
     return user;
   }

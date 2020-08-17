@@ -26,7 +26,12 @@ export const rootDir = __dirname;
   acceptMimes: ["application/json"],
   httpPort: process.env.PORT || 8083,
   httpsPort: false, // CHANGE
-  componentsScan: [`${rootDir}/protocols/**/*.ts`, `${rootDir}/services/**/*.ts`, `${rootDir}/models/**/*.ts`],
+  componentsScan: [
+    `${rootDir}/protocols/**/*.ts`,
+    `${rootDir}/services/**/*.ts`,
+    `${rootDir}/models/**/*.ts`,
+    `${rootDir}/middlewares/**/*.ts`,
+  ],
   mount: {
     "/rest": [`${rootDir}/controllers/**/*.ts`],
   },

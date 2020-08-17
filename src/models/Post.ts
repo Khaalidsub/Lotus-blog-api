@@ -15,12 +15,12 @@ export class Post implements IModel {
   subtitle: string;
   @Property()
   body: string;
-  @IgnoreProperty()
-  @Default(Date.now)
-  createdAt: Date = new Date();
-  @IgnoreProperty()
-  @Default(Date.now)
-  updatedAt: Date = new Date();
+  // @IgnoreProperty()
+  // @Default(Date.now)
+  // createdAt: Date = new Date();
+  // @IgnoreProperty()
+  // @Default(Date.now)
+  // updatedAt: Date = new Date();
   @Ref(Category)
   category: Ref<Category>;
   @Ref(User)
