@@ -20,7 +20,8 @@ RUN apk update && apk add build-base git python
 COPY package.json .
 COPY yarn.lock .
 COPY ./src ./src
-# COPY ./dist ./dist
+RUN yarn build
+COPY ./dist ./dist
 # COPY ./resources ./resources
 # COPY ./spec ./spec
 
