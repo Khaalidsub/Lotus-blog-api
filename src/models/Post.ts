@@ -14,13 +14,13 @@ export class Post implements IModel {
   @Property()
   subtitle: string;
   @Property()
-  body: string;
-  // @IgnoreProperty()
-  // @Default(Date.now)
-  // createdAt: Date = new Date();
-  // @IgnoreProperty()
-  // @Default(Date.now)
-  // updatedAt: Date = new Date();
+  blocks: any;
+  @Property()
+  @Default(Date.now)
+  createdAt?: Date;
+  @Property()
+  @Default("")
+  image?: string;
   @Ref(Category)
   category: Ref<Category>;
   @Ref(User)

@@ -1,6 +1,6 @@
 import {Controller, Inject, Post, Req, BodyParams, $log, Status, Put} from "@tsed/common";
 import {UserService} from "../services/UserService";
-import {Authenticate} from "@tsed/passport";
+import {Authenticate, Authorize} from "@tsed/passport";
 import {User} from "../models/User";
 import {ICredential} from "../models/ICredential";
 
@@ -19,6 +19,23 @@ export class UserController {
   signUp(@Req() req: Req, @BodyParams() user: User) {
     try {
       $log.info("here in sign up", user);
+    } catch (error) {
+      $log.error(error);
+    }
+  }
+  @Post("/session")
+  @Authorize("basic")
+  getSession(@Req("user") req: User) {
+    try {
+      return req;
+    } catch (error) {
+      $log.error(error);
+    }
+  }
+  @Post("/logout")
+  @Authorize("basic")
+  logout(@Req("user") req: User) {
+    try {
     } catch (error) {
       $log.error(error);
     }

@@ -1,4 +1,4 @@
-import {Property, IgnoreProperty} from "@tsed/common";
+import {Property, IgnoreProperty, Default} from "@tsed/common";
 import {Model, ObjectID} from "@tsed/mongoose";
 import {IModel} from "./IModel";
 
@@ -12,6 +12,9 @@ export class User implements IModel {
   email: string;
   @Property()
   password: string;
+  @Property()
+  @Default("")
+  image?: string;
   verifyPassword(password: string) {
     return this.password === password;
   }

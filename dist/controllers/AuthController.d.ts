@@ -6,4 +6,6 @@ export declare class UserController {
     constructor(userService: UserService);
     login(req: Req, credential: ICredential): void;
     signUp(req: Req, user: User): void;
+    getSession(req: User): User | undefined;
+    logout(req: User): void;
 }

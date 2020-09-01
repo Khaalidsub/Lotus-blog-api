@@ -33,7 +33,7 @@ export const rootDir = __dirname;
     `${rootDir}/middlewares/**/*.ts`,
   ],
   mount: {
-    "/rest": [`${rootDir}/controllers/**/*.ts`],
+    "": [`${rootDir}/controllers/**/*.ts`],
   },
   passport: {
     userInfoModel: User,

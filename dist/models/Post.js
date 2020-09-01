@@ -23,8 +23,18 @@ tslib_1.__decorate([
 ], Post.prototype, "subtitle", void 0);
 tslib_1.__decorate([
     common_1.Property(),
+    tslib_1.__metadata("design:type", Object)
+], Post.prototype, "blocks", void 0);
+tslib_1.__decorate([
+    common_1.Property(),
+    common_1.Default(Date.now),
+    tslib_1.__metadata("design:type", Date)
+], Post.prototype, "createdAt", void 0);
+tslib_1.__decorate([
+    common_1.Property(),
+    common_1.Default(""),
     tslib_1.__metadata("design:type", String)
-], Post.prototype, "body", void 0);
+], Post.prototype, "image", void 0);
 tslib_1.__decorate([
     mongoose_1.Ref(Category_1.Category),
     tslib_1.__metadata("design:type", Object)

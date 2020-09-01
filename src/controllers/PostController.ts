@@ -1,7 +1,7 @@
-import {Controller, Get, Post, Inject, PathParams, BodyParams, Delete, $log, Session, Req, Put} from "@tsed/common";
+import {Controller, Get, Post, Inject, PathParams, BodyParams, Delete, $log, Req, Put} from "@tsed/common";
 import {Post as Posts} from "../models/Post";
 import {PostService} from "../services/PostService";
-import {Authorize, Authenticate} from "@tsed/passport";
+import {Authorize} from "@tsed/passport";
 import {User} from "../models/User";
 
 @Controller("/posts")

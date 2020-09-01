@@ -25,6 +25,11 @@ tslib_1.__decorate([
     common_1.Property(),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "password", void 0);
+tslib_1.__decorate([
+    common_1.Property(),
+    common_1.Default(""),
+    tslib_1.__metadata("design:type", String)
+], User.prototype, "image", void 0);
 User = tslib_1.__decorate([
     mongoose_1.Model()
 ], User);

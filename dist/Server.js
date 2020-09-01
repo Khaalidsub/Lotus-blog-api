@@ -72,7 +72,7 @@ Server = tslib_1.__decorate([
             `${exports.rootDir}/middlewares/**/*.ts`,
         ],
         mount: {
-            "/rest": [`${exports.rootDir}/controllers/**/*.ts`],
+            "": [`${exports.rootDir}/controllers/**/*.ts`],
         },
         passport: {
             userInfoModel: User_1.User,

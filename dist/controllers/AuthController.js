@@ -19,6 +19,21 @@ let UserController = class UserController {
             common_1.$log.error(error);
         }
     }
+    getSession(req) {
+        try {
+            return req;
+        }
+        catch (error) {
+            common_1.$log.error(error);
+        }
+    }
+    logout(req) {
+        try {
+        }
+        catch (error) {
+            common_1.$log.error(error);
+        }
+    }
 };
 tslib_1.__decorate([
     common_1.Post("/login"),
@@ -36,6 +51,22 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:paramtypes", [Object, User_1.User]),
     tslib_1.__metadata("design:returntype", void 0)
 ], UserController.prototype, "signUp", null);
+tslib_1.__decorate([
+    common_1.Post("/session"),
+    passport_1.Authorize("basic"),
+    tslib_1.__param(0, common_1.Req("user")),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [User_1.User]),
+    tslib_1.__metadata("design:returntype", void 0)
+], UserController.prototype, "getSession", null);
+tslib_1.__decorate([
+    common_1.Post("/logout"),
+    passport_1.Authorize("basic"),
+    tslib_1.__param(0, common_1.Req("user")),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [User_1.User]),
+    tslib_1.__metadata("design:returntype", void 0)
+], UserController.prototype, "logout", null);
 UserController = tslib_1.__decorate([
     common_1.Controller(""),
     tslib_1.__param(0, common_1.Inject(UserService_1.UserService)),
