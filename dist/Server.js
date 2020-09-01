@@ -64,7 +64,7 @@ Server = tslib_1.__decorate([
         rootDir: exports.rootDir,
         acceptMimes: ["application/json"],
         httpPort: process.env.PORT || 8083,
-        httpsPort: false,
+        httpsPort: true,
         componentsScan: [
             `${exports.rootDir}/protocols/**/*.ts`,
             `${exports.rootDir}/services/**/*.ts`,
