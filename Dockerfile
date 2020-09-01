@@ -31,5 +31,5 @@ RUN yarn install --production
 EXPOSE 8081
 ENV PORT 8081
 ENV NODE_ENV production
-
+ENV DEFAULT_URL mongodb://172.17.0.2:27017/default
 CMD ["yarn", "start:prod"]
