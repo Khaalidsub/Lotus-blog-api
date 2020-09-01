@@ -64,7 +64,7 @@ Server = tslib_1.__decorate([
         rootDir: exports.rootDir,
         acceptMimes: ["application/json"],
         httpPort: process.env.PORT || 8083,
-        httpsPort: true,
+        httpsPort: false,
         componentsScan: [
             `${exports.rootDir}/protocols/**/*.ts`,
             `${exports.rootDir}/services/**/*.ts`,
@@ -72,7 +72,7 @@ Server = tslib_1.__decorate([
             `${exports.rootDir}/middlewares/**/*.ts`,
         ],
         mount: {
-            "": [`${exports.rootDir}/controllers/**/*.ts`],
+            "/blog": [`${exports.rootDir}/controllers/**/*.ts`],
         },
         passport: {
             userInfoModel: User_1.User,
