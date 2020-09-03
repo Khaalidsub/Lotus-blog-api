@@ -1,6 +1,6 @@
-import {Req, $log} from "@tsed/common";
+import {Req, $log, Session} from "@tsed/common";
 import {OnInstall, OnVerify, Protocol} from "@tsed/passport";
-import {Strategy} from "passport";
+import {Strategy, session} from "passport";
 import {BasicStrategy} from "passport-http";
 import {UserService} from "../services/UserService";
 import {User} from "../models/User";
@@ -13,9 +13,9 @@ import {User} from "../models/User";
 export class BasicProtocol implements OnVerify, OnInstall {
   constructor(private usersService: UserService) {}
 
-  async $onVerify(@Req("user") user: User) {
-    $log.info("here in basic protocol", user);
-    if (!user) {
+  async $onVerify(@Session() session: Express.Session) {
+    $log.info("here in basic protocol", session);
+    if (!session.user) {
       return false;
     } else return true;
   }

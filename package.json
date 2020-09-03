@@ -41,7 +41,8 @@
     "mongoose": "5.9.27",
     "passport": "0.4.1",
     "passport-http": "^0.3.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@tsed/cli-plugin-eslint": "1.17.0",

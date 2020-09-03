@@ -5,6 +5,7 @@ import {UserService} from "../services/UserService";
 import {ICredential} from "../models/ICredential";
 import {User} from "../models/User";
 import {use} from "passport";
+import session from "express-session";
 
 @Protocol<IStrategyOptions>({
   name: "login",
@@ -17,7 +18,7 @@ import {use} from "passport";
 export class LoginLocalProtocol implements OnVerify, OnInstall {
   constructor(private usersService: UserService) {}
 
-  async $onVerify(@Req() request: Req, @BodyParams() credentials: ICredential, @Session("user") sessionUser: User) {
+  async $onVerify(@Req() request: Req, @BodyParams() credentials: ICredential, @Session() sessionUser: any) {
     const {email, password} = credentials;
 
     const user = await this.usersService.findOne({email});
@@ -31,13 +32,15 @@ export class LoginLocalProtocol implements OnVerify, OnInstall {
       return false;
       // OR throw new NotAuthorized("Wrong credentials")
     }
-    sessionUser = user;
-    sessionUser.password = "";
+    sessionUser.user = user;
+    sessionUser.user.password = "";
     $log.info("logged:", sessionUser);
+    // request.user = user;
     return user;
   }
 
   $onInstall(strategy: Strategy): void {
+    // $log.info("strategory", strategy);
     // intercept the strategy instance to adding extra configuration
   }
 }

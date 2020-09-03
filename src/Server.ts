@@ -25,7 +25,7 @@ export const rootDir = __dirname;
   rootDir,
   acceptMimes: ["application/json"],
   httpPort: process.env.PORT || 8083,
-  httpsPort: true, // CHANGE
+  httpsPort: false, // CHANGE
   componentsScan: [
     `${rootDir}/protocols/**/*.ts`,
     `${rootDir}/services/**/*.ts`,
@@ -49,9 +49,14 @@ export class Server {
   settings: Configuration;
 
   $beforeRoutesInit() {
-    mongoose.connect(mongoConnection.url, mongoConnection.connectionOptions);
+    this.app.raw.set("trust proxy", 1);
     this.app
-      .use(cors())
+      .use(
+        cors({
+          credentials: true,
+          origin: "http://localhost:3000",
+        })
+      )
       .use(GlobalAcceptMimesMiddleware)
       .use(cookieParser())
       .use(compress({}))
@@ -62,22 +67,23 @@ export class Server {
           extended: true,
         })
       )
-
       .use(
         session({
-          secret: "chocoLate",
           resave: true,
+          name: "connect.sid",
+          proxy: true,
+          secret: process.env.SESSION_KEY || "keyboard cat",
           saveUninitialized: true,
-          store: new MongoStore({mongooseConnection: mongoose.connection}),
+          store: new MongoStore({url: process.env.DEFAULT_URL || "mongodb://157.245.57.136:27017/default", ttl: 14 * 24 * 60 * 60}),
           cookie: {
             path: "/",
             httpOnly: true,
-            secure: false,
+            secure: true,
             maxAge: 36000 * 60 * 24,
           },
         })
-      );
-    this.app.use(CreateRequestSessionMiddleware);
+      )
+      .use(CreateRequestSessionMiddleware);
     return null;
   }
 }

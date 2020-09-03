@@ -1,4 +1,4 @@
-import {Controller, Inject, Post, Req, BodyParams, $log, Status, Put} from "@tsed/common";
+import {Controller, Inject, Post, Req, BodyParams, $log, Status, Put, Get, Session} from "@tsed/common";
 import {UserService} from "../services/UserService";
 import {Authenticate, Authorize} from "@tsed/passport";
 import {User} from "../models/User";
@@ -6,33 +6,35 @@ import {ICredential} from "../models/ICredential";
 
 @Controller("")
 export class UserController {
-  constructor(@Inject(UserService) userService: UserService) {}
+  constructor(@Inject(UserService) public userService: UserService) {}
 
   @Post("/login")
   @Authenticate("login")
-  login(@Req() req: Req, @BodyParams() credential: ICredential) {
-    $log.info("here in auth", req.user);
+  async login(@Req() req: Req, @BodyParams() credential: ICredential, @Session("user") user: any) {
+    const response = await this.userService.find({email: credential.email});
+    user = response;
+    $log.info("here in auth", req);
   }
 
   @Post("/signup")
   @Authenticate("signup")
   signUp(@Req() req: Req, @BodyParams() user: User) {
     try {
-      $log.info("here in sign up", user);
     } catch (error) {
       $log.error(error);
     }
   }
-  @Post("/session")
-  @Authorize("basic")
-  getSession(@Req("user") req: User) {
+  @Get("/session")
+  // @Authorize("basic")
+  getSession(@Session() session: any) {
     try {
-      return req;
+      $log.info(session.user);
+      return session;
     } catch (error) {
       $log.error(error);
     }
   }
-  @Post("/logout")
+  @Get("/logout")
   @Authorize("basic")
   logout(@Req("user") req: User) {
     try {
