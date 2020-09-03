@@ -8,6 +8,6 @@ import { User } from "../models/User";
 export declare class LoginLocalProtocol implements OnVerify, OnInstall {
     private usersService;
     constructor(usersService: UserService);
-    $onVerify(request: Req, credentials: ICredential, sessionUser: User): Promise<false | (User & import("mongoose").Document)>;
+    $onVerify(request: Req, credentials: ICredential, sessionUser: any): Promise<false | (User & import("mongoose").Document)>;
     $onInstall(strategy: Strategy): void;
 }

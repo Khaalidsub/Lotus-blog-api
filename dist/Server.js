@@ -14,8 +14,6 @@ const cors = require("cors");
 require("@tsed/ajv");
 require("@tsed/mongoose");
 const mongoose_1 = require("./config/mongoose");
-const default_config_1 = require("./config/mongoose/default.config");
-const mongoose = require("mongoose");
 const session = require("express-session");
 const Mongo = require("connect-mongo");
 const MongoStore = Mongo(session);
@@ -24,9 +22,12 @@ const CreateRequestSession_1 = require("./middlewares/CreateRequestSession");
 exports.rootDir = __dirname;
 let Server = class Server {
     $beforeRoutesInit() {
-        mongoose.connect(default_config_1.default.url, default_config_1.default.connectionOptions);
+        this.app.raw.set("trust proxy", 1);
         this.app
-            .use(cors())
+            .use(cors({
+            credentials: true,
+            origin: "http://localhost:3000",
+        }))
             .use(platform_express_1.GlobalAcceptMimesMiddleware)
             .use(cookieParser())
             .use(compress({}))
@@ -36,18 +37,20 @@ let Server = class Server {
             extended: true,
         }))
             .use(session({
-            secret: "chocoLate",
             resave: true,
+            name: "connect.sid",
+            proxy: true,
+            secret: process.env.SESSION_KEY || "keyboard cat",
             saveUninitialized: true,
-            store: new MongoStore({ mongooseConnection: mongoose.connection }),
+            store: new MongoStore({ url: process.env.DEFAULT_URL || "mongodb://157.245.57.136:27017/default", ttl: 14 * 24 * 60 * 60 }),
             cookie: {
                 path: "/",
                 httpOnly: true,
-                secure: false,
+                secure: true,
                 maxAge: 36000 * 60 * 24,
             },
-        }));
-        this.app.use(CreateRequestSession_1.CreateRequestSessionMiddleware);
+        }))
+            .use(CreateRequestSession_1.CreateRequestSessionMiddleware);
         return null;
     }
 };
@@ -64,7 +67,7 @@ Server = tslib_1.__decorate([
         rootDir: exports.rootDir,
         acceptMimes: ["application/json"],
         httpPort: process.env.PORT || 8083,
-        httpsPort: true,
+        httpsPort: false,
         componentsScan: [
             `${exports.rootDir}/protocols/**/*.ts`,
             `${exports.rootDir}/services/**/*.ts`,

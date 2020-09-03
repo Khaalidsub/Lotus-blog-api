@@ -6,7 +6,6 @@ const common_1 = require("@tsed/common");
 const passport_1 = require("@tsed/passport");
 const passport_local_1 = require("passport-local");
 const UserService_1 = require("../services/UserService");
-const User_1 = require("../models/User");
 let LoginLocalProtocol = class LoginLocalProtocol {
     constructor(usersService) {
         this.usersService = usersService;
@@ -23,20 +22,22 @@ let LoginLocalProtocol = class LoginLocalProtocol {
                 return false;
                 // OR throw new NotAuthorized("Wrong credentials")
             }
-            sessionUser = user;
-            sessionUser.password = "";
+            sessionUser.user = user;
+            sessionUser.user.password = "";
             common_1.$log.info("logged:", sessionUser);
+            // request.user = user;
             return user;
         });
     }
     $onInstall(strategy) {
+        // $log.info("strategory", strategy);
         // intercept the strategy instance to adding extra configuration
     }
 };
 tslib_1.__decorate([
-    tslib_1.__param(0, common_1.Req()), tslib_1.__param(1, common_1.BodyParams()), tslib_1.__param(2, common_1.Session("user")),
+    tslib_1.__param(0, common_1.Req()), tslib_1.__param(1, common_1.BodyParams()), tslib_1.__param(2, common_1.Session()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Object, Object, User_1.User]),
+    tslib_1.__metadata("design:paramtypes", [Object, Object, Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], LoginLocalProtocol.prototype, "$onVerify", null);
 LoginLocalProtocol = tslib_1.__decorate([

@@ -6,15 +6,14 @@ const common_1 = require("@tsed/common");
 const passport_1 = require("@tsed/passport");
 const passport_http_1 = require("passport-http");
 const UserService_1 = require("../services/UserService");
-const User_1 = require("../models/User");
 let BasicProtocol = class BasicProtocol {
     constructor(usersService) {
         this.usersService = usersService;
     }
-    $onVerify(user) {
+    $onVerify(session) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            common_1.$log.info("here in basic protocol", user);
-            if (!user) {
+            common_1.$log.info("here in basic protocol", session);
+            if (!session.user) {
                 return false;
             }
             else
@@ -26,9 +25,9 @@ let BasicProtocol = class BasicProtocol {
     }
 };
 tslib_1.__decorate([
-    tslib_1.__param(0, common_1.Req("user")),
+    tslib_1.__param(0, common_1.Session()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [User_1.User]),
+    tslib_1.__metadata("design:paramtypes", [Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], BasicProtocol.prototype, "$onVerify", null);
 BasicProtocol = tslib_1.__decorate([
