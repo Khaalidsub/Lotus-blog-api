@@ -1,11 +1,10 @@
-import {BodyParams, Req, Session, $log} from "@tsed/common";
-import {OnInstall, OnVerify, Protocol} from "@tsed/passport";
-import {IStrategyOptions, Strategy} from "passport-local";
+import {BodyParams, Req, Session, $log, Use, ConverterService, Inject} from "@tsed/common";
+import {OnInstall, OnVerify, Protocol, PassportSerializerService, UserInfo} from "@tsed/passport";
+import {IStrategyOptions, Strategy, VerifyFunctionWithRequest, IVerifyOptions} from "passport-local";
+import passport from "passport";
 import {UserService} from "../services/UserService";
 import {ICredential} from "../models/ICredential";
-import {User} from "../models/User";
-import {use} from "passport";
-import session from "express-session";
+import {response} from "express";
 
 @Protocol<IStrategyOptions>({
   name: "login",
@@ -13,29 +12,31 @@ import session from "express-session";
   settings: {
     usernameField: "email",
     passwordField: "password",
+    session: true,
   },
 })
 export class LoginLocalProtocol implements OnVerify, OnInstall {
-  constructor(private usersService: UserService) {}
+  constructor(@Inject(UserService) public usersService: UserService) {}
 
-  async $onVerify(@Req() request: Req, @BodyParams() credentials: ICredential, @Session() sessionUser: any) {
+  async $onVerify(@Req() request: Req, @BodyParams() credentials: ICredential) {
     const {email, password} = credentials;
-
+    $log.info(request.headers, request.headers.cookie);
+    // const value = new Passport()
     const user = await this.usersService.findOne({email});
 
     if (!user) {
       return false;
       // OR throw new NotAuthorized("Wrong credentials")
     }
+    // response.cookie =
 
     if (!user.verifyPassword(password)) {
-      return false;
       // OR throw new NotAuthorized("Wrong credentials")
+      return false;
     }
-    sessionUser.user = user;
-    sessionUser.user.password = "";
-    $log.info("logged:", sessionUser);
-    // request.user = user;
+
+    $log.info("logged:", user);
+    // sessionUser = user;
     return user;
   }
 

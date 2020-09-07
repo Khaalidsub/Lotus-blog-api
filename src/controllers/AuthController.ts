@@ -1,8 +1,7 @@
-import {Controller, Inject, Post, Req, BodyParams, $log, Status, Put, Get, Session} from "@tsed/common";
+import {Controller, Inject, Post, Req, $log, Get} from "@tsed/common";
 import {UserService} from "../services/UserService";
 import {Authenticate, Authorize} from "@tsed/passport";
 import {User} from "../models/User";
-import {ICredential} from "../models/ICredential";
 
 @Controller("")
 export class UserController {
@@ -10,34 +9,38 @@ export class UserController {
 
   @Post("/login")
   @Authenticate("login")
-  async login(@Req() req: Req, @BodyParams() credential: ICredential, @Session("user") user: any) {
-    const response = await this.userService.find({email: credential.email});
-    user = response;
-    $log.info("here in auth", req);
+  async login(@Req("user") req: User) {
+    return req;
   }
 
   @Post("/signup")
   @Authenticate("signup")
-  signUp(@Req() req: Req, @BodyParams() user: User) {
+  signUp(@Req("user") req: User) {
     try {
+      // $log.info(req);
+      return req;
     } catch (error) {
       $log.error(error);
     }
   }
   @Get("/session")
   // @Authorize("basic")
-  getSession(@Session() session: any) {
+  getSession(@Req() req: Req) {
     try {
-      $log.info(session.user);
-      return session;
+      const user = req.user || {id: null};
+      $log.info(req.session);
+      return user;
     } catch (error) {
       $log.error(error);
+      return null;
     }
   }
   @Get("/logout")
-  @Authorize("basic")
-  logout(@Req("user") req: User) {
+  logout(@Req() req: Req) {
     try {
+      req.logout();
+      req.user = undefined;
+      $log.info("logged out", req.session);
     } catch (error) {
       $log.error(error);
     }

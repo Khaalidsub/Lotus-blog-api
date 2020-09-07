@@ -10,8 +10,6 @@ import * as cors from "cors";
 import "@tsed/ajv";
 import "@tsed/mongoose";
 import mongooseConfig from "./config/mongoose";
-import mongoConnection from "./config/mongoose/default.config";
-import * as mongoose from "mongoose";
 import * as session from "express-session";
 import * as Mongo from "connect-mongo";
 const MongoStore = Mongo(session);
@@ -26,6 +24,7 @@ export const rootDir = __dirname;
   acceptMimes: ["application/json"],
   httpPort: process.env.PORT || 8083,
   httpsPort: false, // CHANGE
+
   componentsScan: [
     `${rootDir}/protocols/**/*.ts`,
     `${rootDir}/services/**/*.ts`,
@@ -49,12 +48,14 @@ export class Server {
   settings: Configuration;
 
   $beforeRoutesInit() {
-    this.app.raw.set("trust proxy", 1);
+    // this.app.raw.set("trust proxy", 1);
     this.app
       .use(
         cors({
           credentials: true,
           origin: "http://localhost:3000",
+          allowedHeaders: ["Origin, X-Requested-With, Content-Type, Accept"],
+          maxAge: 36000 * 60 * 24,
         })
       )
       .use(GlobalAcceptMimesMiddleware)
@@ -70,15 +71,16 @@ export class Server {
       .use(
         session({
           resave: true,
-          name: "connect.sid",
-          proxy: true,
-          secret: process.env.SESSION_KEY || "keyboard cat",
-          saveUninitialized: true,
-          store: new MongoStore({url: process.env.DEFAULT_URL || "mongodb://157.245.57.136:27017/default", ttl: 14 * 24 * 60 * 60}),
+          name: "app",
+          // proxy: true,
+          secret: "mysecretkey",
+          saveUninitialized: false,
+          store: new MongoStore({url: process.env.DEFAULT_URL || "mongodb://localhost:27017/default", ttl: 14 * 24 * 60 * 60}),
           cookie: {
             path: "/",
-            httpOnly: true,
-            secure: true,
+            httpOnly: false,
+
+            secure: false,
             maxAge: 36000 * 60 * 24,
           },
         })
