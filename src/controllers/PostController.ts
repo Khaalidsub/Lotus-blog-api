@@ -3,6 +3,7 @@ import {Post as Posts} from "../models/Post";
 import {PostService} from "../services/PostService";
 import {Authorize} from "@tsed/passport";
 import {User} from "../models/User";
+import {tempId} from "./AuthController";
 
 @Controller("/posts")
 export class PostController {
@@ -15,10 +16,10 @@ export class PostController {
   }
   //get posts of the logged  user
   @Get("/my-posts")
-  @Authorize("basic")
+  // @Authorize("basic")
   async getUserPosts(@Req("user") req: User) {
     $log.info("session", req);
-    const posts = await this.service.find({user: req._id});
+    const posts = await this.service.find({user: tempId});
 
     return posts;
   }
@@ -36,21 +37,22 @@ export class PostController {
   }
 
   @Post()
-  @Authorize("basic")
+  // @Authorize("basic")
   async add(@BodyParams("post") post: Posts, @Req("user") req: User) {
-    post.user = req._id;
+    // post.user = req._id;
+    post.user = tempId;
     const newPost = await this.service.add(post);
     return newPost;
   }
 
   @Put("/update")
-  @Authorize("basic")
+  // @Authorize("basic")
   async updatePost(@BodyParams("post") post: Posts) {
     const updatePost = this.service.set(post);
     return updatePost;
   }
   @Delete("/post/:id")
-  @Authorize("basic")
+  // @Authorize("basic")
   async delete(@PathParams("id") id: String) {
     const response = await this.service.delete(id);
     return response;

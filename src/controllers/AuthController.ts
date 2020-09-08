@@ -2,7 +2,7 @@ import {Controller, Inject, Post, Req, $log, Get} from "@tsed/common";
 import {UserService} from "../services/UserService";
 import {Authenticate, Authorize} from "@tsed/passport";
 import {User} from "../models/User";
-
+export const tempId = "5f549bc077ff7458309f1b5c";
 @Controller("")
 export class UserController {
   constructor(@Inject(UserService) public userService: UserService) {}
@@ -25,10 +25,12 @@ export class UserController {
   }
   @Get("/session")
   // @Authorize("basic")
-  getSession(@Req() req: Req) {
+  async getSession(@Req() req: Req) {
     try {
-      const user = req.user || {id: null};
-      $log.info(req.session);
+      // const user = req.user || {id: null};
+      // $log.info(req.session);
+      // return user;
+      const user = await this.userService.findById(tempId);
       return user;
     } catch (error) {
       $log.error(error);
