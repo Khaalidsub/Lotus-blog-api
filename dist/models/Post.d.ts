@@ -6,9 +6,11 @@ export declare class Post implements IModel {
     _id: string;
     title: string;
     subtitle: string;
-    blocks: any;
+    blocks: [];
     createdAt?: Date;
     image?: string;
+    likedPosts?: Ref<Post[]>;
+    bookMarkedPosts?: Ref<Post[]>;
     category: Ref<Category>;
     user: Ref<User>;
 }

@@ -6,7 +6,7 @@ const common_1 = require("@tsed/common");
 const Post_1 = require("../models/Post");
 const PostService_1 = require("../services/PostService");
 const passport_1 = require("@tsed/passport");
-const User_1 = require("../models/User");
+// import {tempId} from "./AuthController";
 let PostController = class PostController {
     constructor(service) {
         this.service = service;
@@ -18,13 +18,13 @@ let PostController = class PostController {
         });
     }
     //get posts of the logged  user
-    getUserPosts(req) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            common_1.$log.info("session", req);
-            const posts = yield this.service.find({ user: req._id });
-            return posts;
-        });
-    }
+    // @Get("/my-posts")
+    // // @Authorize("basic")
+    // async getUserPosts(@Req("user") req: User) {
+    //   $log.info("session", req);
+    //   const posts = await this.service.find({user: tempId});
+    //   return posts;
+    // }
     //get the posts of another user
     getProfilePosts(id) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -38,9 +38,11 @@ let PostController = class PostController {
             return post;
         });
     }
-    add(post, req) {
+    add(post) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            post.user = req._id;
+            // post.user = req._id;
+            // post.user = tempId;
+            common_1.$log.info(post);
             const newPost = yield this.service.add(post);
             return newPost;
         });
@@ -65,14 +67,6 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:returntype", Promise)
 ], PostController.prototype, "getAll", null);
 tslib_1.__decorate([
-    common_1.Get("/my-posts"),
-    passport_1.Authorize("basic"),
-    tslib_1.__param(0, common_1.Req("user")),
-    tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [User_1.User]),
-    tslib_1.__metadata("design:returntype", Promise)
-], PostController.prototype, "getUserPosts", null);
-tslib_1.__decorate([
     common_1.Get("/user-posts/:id"),
     tslib_1.__param(0, common_1.PathParams("id")),
     tslib_1.__metadata("design:type", Function),
@@ -88,23 +82,23 @@ tslib_1.__decorate([
 ], PostController.prototype, "get", null);
 tslib_1.__decorate([
     common_1.Post(),
-    passport_1.Authorize("basic"),
-    tslib_1.__param(0, common_1.BodyParams("post")), tslib_1.__param(1, common_1.Req("user")),
+    passport_1.Authorize("jwt"),
+    tslib_1.__param(0, common_1.BodyParams()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Post_1.Post, User_1.User]),
+    tslib_1.__metadata("design:paramtypes", [Post_1.Post]),
     tslib_1.__metadata("design:returntype", Promise)
 ], PostController.prototype, "add", null);
 tslib_1.__decorate([
     common_1.Put("/update"),
-    passport_1.Authorize("basic"),
-    tslib_1.__param(0, common_1.BodyParams("post")),
+    passport_1.Authorize("jwt"),
+    tslib_1.__param(0, common_1.BodyParams()),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [Post_1.Post]),
     tslib_1.__metadata("design:returntype", Promise)
 ], PostController.prototype, "updatePost", null);
 tslib_1.__decorate([
     common_1.Delete("/post/:id"),
-    passport_1.Authorize("basic"),
+    passport_1.Authorize("jwt"),
     tslib_1.__param(0, common_1.PathParams("id")),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [String]),

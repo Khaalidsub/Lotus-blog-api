@@ -1,12 +1,13 @@
+/// <reference types="mongoose" />
 import { Req } from "@tsed/common";
 import { UserService } from "../services/UserService";
 import { User } from "../models/User";
-import { ICredential } from "../models/ICredential";
 export declare class UserController {
     userService: UserService;
     constructor(userService: UserService);
-    login(req: Req, credential: ICredential, user: any): Promise<void>;
-    signUp(req: Req, user: User): void;
-    getSession(session: any): any;
-    logout(req: User): void;
+    login(req: User): Promise<User>;
+    signUp(req: User): User | undefined;
+    getSession(req: User): Promise<User | null>;
+    getUser(id: String): Promise<(User & import("mongoose").Document) | null | undefined>;
+    logout(req: Req): void;
 }

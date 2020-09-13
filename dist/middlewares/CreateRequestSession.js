@@ -5,8 +5,9 @@ const tslib_1 = require("tslib");
 const common_1 = require("@tsed/common");
 let CreateRequestSessionMiddleware = class CreateRequestSessionMiddleware {
     use(request) {
+        var _a;
         if (request.session) {
-            request.session.user = request.session.user || {
+            request.session.user = ((_a = request.session.passport) === null || _a === void 0 ? void 0 : _a.user) || {
                 id: null,
             };
         }

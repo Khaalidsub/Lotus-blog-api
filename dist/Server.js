@@ -18,15 +18,15 @@ const session = require("express-session");
 const Mongo = require("connect-mongo");
 const MongoStore = Mongo(session);
 const User_1 = require("./models/User");
-const CreateRequestSession_1 = require("./middlewares/CreateRequestSession");
 exports.rootDir = __dirname;
 let Server = class Server {
     $beforeRoutesInit() {
-        this.app.raw.set("trust proxy", 1);
+        // this.app.raw.set("trust proxy", 1);
         this.app
             .use(cors({
             credentials: true,
             origin: "http://localhost:3000",
+            maxAge: 36000 * 60 * 24,
         }))
             .use(platform_express_1.GlobalAcceptMimesMiddleware)
             .use(cookieParser())
@@ -35,22 +35,21 @@ let Server = class Server {
             .use(bodyParser.json())
             .use(bodyParser.urlencoded({
             extended: true,
-        }))
-            .use(session({
+        }));
+        this.app.raw.use(session({
             resave: true,
-            name: "connect.sid",
-            proxy: true,
-            secret: process.env.SESSION_KEY || "keyboard cat",
-            saveUninitialized: true,
-            store: new MongoStore({ url: process.env.DEFAULT_URL || "mongodb://157.245.57.136:27017/default", ttl: 14 * 24 * 60 * 60 }),
+            name: "app",
+            // proxy: true,
+            secret: "mysecretkey",
+            saveUninitialized: false,
+            store: new MongoStore({ url: process.env.DEFAULT_URL || "mongodb://localhost:27017/default", ttl: 14 * 24 * 60 * 60 }),
             cookie: {
                 path: "/",
-                httpOnly: true,
-                secure: true,
+                httpOnly: false,
+                secure: false,
                 maxAge: 36000 * 60 * 24,
             },
-        }))
-            .use(CreateRequestSession_1.CreateRequestSessionMiddleware);
+        }));
         return null;
     }
 };

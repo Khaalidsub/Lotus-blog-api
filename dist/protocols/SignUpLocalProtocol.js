@@ -8,24 +8,28 @@ const passport_local_1 = require("passport-local");
 const exceptions_1 = require("@tsed/exceptions");
 const UserService_1 = require("../services/UserService");
 const User_1 = require("../models/User");
+const jsonwebtoken_1 = require("jsonwebtoken");
 let SignupLocalProtocol = class SignupLocalProtocol {
     constructor(usersService) {
         this.usersService = usersService;
     }
-    $onVerify(request, user, session) {
+    $onVerify(user) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                common_1.$log.info("here in protocol", user);
+                // $log.info("here in protocol", user);
                 const { email } = user;
                 const found = yield this.usersService.findOne({ email });
                 if (found) {
                     throw new exceptions_1.Forbidden("Email is already registered");
                 }
-                const foundUser = yield this.usersService.add(user);
-                if (foundUser)
-                    session.user = foundUser;
+                const newUser = yield this.usersService.add(user);
+                if (!newUser) {
+                    return false;
+                }
                 //  await this.usersService.findOne(user.email);
-                return foundUser;
+                const token = jsonwebtoken_1.sign(newUser.id, "app");
+                common_1.$log.info("this is token", token);
+                return token;
             }
             catch (error) {
                 common_1.$log.error(error);
@@ -37,9 +41,9 @@ let SignupLocalProtocol = class SignupLocalProtocol {
     }
 };
 tslib_1.__decorate([
-    tslib_1.__param(0, common_1.Req()), tslib_1.__param(1, common_1.BodyParams()), tslib_1.__param(2, common_1.Session()),
+    tslib_1.__param(0, common_1.BodyParams()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Object, User_1.User, Object]),
+    tslib_1.__metadata("design:paramtypes", [User_1.User]),
     tslib_1.__metadata("design:returntype", Promise)
 ], SignupLocalProtocol.prototype, "$onVerify", null);
 SignupLocalProtocol = tslib_1.__decorate([
@@ -49,8 +53,10 @@ SignupLocalProtocol = tslib_1.__decorate([
         settings: {
             usernameField: "email",
             passwordField: "password",
+            session: false,
         },
     }),
+    tslib_1.__param(0, common_1.Inject(UserService_1.UserService)),
     tslib_1.__metadata("design:paramtypes", [UserService_1.UserService])
 ], SignupLocalProtocol);
 exports.SignupLocalProtocol = SignupLocalProtocol;

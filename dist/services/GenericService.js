@@ -46,7 +46,7 @@ class GenericService {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 const prevDoc = yield this.findById(obj._id);
-                const updateDoc = yield (prevDoc === null || prevDoc === void 0 ? void 0 : prevDoc.update(obj));
+                const updateDoc = yield (prevDoc === null || prevDoc === void 0 ? void 0 : prevDoc.updateOne(obj));
                 common_1.$log.info(updateDoc);
                 return updateDoc;
             }

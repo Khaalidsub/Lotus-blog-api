@@ -23,7 +23,7 @@ tslib_1.__decorate([
 ], Post.prototype, "subtitle", void 0);
 tslib_1.__decorate([
     common_1.Property(),
-    tslib_1.__metadata("design:type", Object)
+    tslib_1.__metadata("design:type", Array)
 ], Post.prototype, "blocks", void 0);
 tslib_1.__decorate([
     common_1.Property(),
@@ -35,6 +35,14 @@ tslib_1.__decorate([
     common_1.Default(""),
     tslib_1.__metadata("design:type", String)
 ], Post.prototype, "image", void 0);
+tslib_1.__decorate([
+    common_1.Property(),
+    tslib_1.__metadata("design:type", Object)
+], Post.prototype, "likedPosts", void 0);
+tslib_1.__decorate([
+    common_1.Property(),
+    tslib_1.__metadata("design:type", Object)
+], Post.prototype, "bookMarkedPosts", void 0);
 tslib_1.__decorate([
     mongoose_1.Ref(Category_1.Category),
     tslib_1.__metadata("design:type", Object)
