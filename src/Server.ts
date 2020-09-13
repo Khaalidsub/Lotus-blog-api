@@ -54,7 +54,7 @@ export class Server {
         cors({
           credentials: true,
           origin: "http://localhost:3000",
-          allowedHeaders: ["Origin, X-Requested-With, Content-Type, Accept"],
+
           maxAge: 36000 * 60 * 24,
         })
       )
@@ -67,25 +67,25 @@ export class Server {
         bodyParser.urlencoded({
           extended: true,
         })
-      )
-      .use(
-        session({
-          resave: true,
-          name: "app",
-          // proxy: true,
-          secret: "mysecretkey",
-          saveUninitialized: false,
-          store: new MongoStore({url: process.env.DEFAULT_URL || "mongodb://localhost:27017/default", ttl: 14 * 24 * 60 * 60}),
-          cookie: {
-            path: "/",
-            httpOnly: false,
+      );
+    this.app.raw.use(
+      session({
+        resave: true,
+        name: "app",
+        // proxy: true,
+        secret: "mysecretkey",
+        saveUninitialized: false,
+        store: new MongoStore({url: process.env.DEFAULT_URL || "mongodb://localhost:27017/default", ttl: 14 * 24 * 60 * 60}),
+        cookie: {
+          path: "/",
+          httpOnly: false,
 
-            secure: false,
-            maxAge: 36000 * 60 * 24,
-          },
-        })
-      )
-      .use(CreateRequestSessionMiddleware);
+          secure: false,
+          maxAge: 36000 * 60 * 24,
+        },
+      })
+    );
+
     return null;
   }
 }

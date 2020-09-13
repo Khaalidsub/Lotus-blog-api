@@ -14,13 +14,17 @@ export class Post implements IModel {
   @Property()
   subtitle: string;
   @Property()
-  blocks: any;
+  blocks: [];
   @Property()
   @Default(Date.now)
   createdAt?: Date;
   @Property()
   @Default("")
   image?: string;
+  @Property()
+  likedPosts?: Ref<Post[]>;
+  @Property()
+  bookMarkedPosts?: Ref<Post[]>;
   @Ref(Category)
   category: Ref<Category>;
   @Ref(User)

@@ -38,7 +38,7 @@ export class GenericService<T extends IModel> implements IService<T> {
   async set(obj: T) {
     try {
       const prevDoc = await this.findById(obj._id);
-      const updateDoc = await prevDoc?.update(obj);
+      const updateDoc = await prevDoc?.updateOne(obj);
       $log.info(updateDoc);
       return updateDoc;
     } catch (error) {

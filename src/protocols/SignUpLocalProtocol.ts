@@ -1,18 +1,17 @@
-import {BodyParams, Req, $log, Session, Inject} from "@tsed/common";
-import {OnInstall, OnVerify, Protocol, PassportMiddleware} from "@tsed/passport";
+import {BodyParams, $log, Inject} from "@tsed/common";
+import {OnInstall, OnVerify, Protocol} from "@tsed/passport";
 import {Strategy, IStrategyOptions} from "passport-local";
 import {Forbidden} from "@tsed/exceptions";
 import {UserService} from "../services/UserService";
 import {User} from "../models/User";
-import {session} from "passport";
-
+import {sign} from "jsonwebtoken";
 @Protocol<IStrategyOptions>({
   name: "signup",
   useStrategy: Strategy,
   settings: {
     usernameField: "email",
     passwordField: "password",
-    session: true,
+    session: false,
   },
 })
 export class SignupLocalProtocol implements OnVerify, OnInstall {
@@ -29,9 +28,14 @@ export class SignupLocalProtocol implements OnVerify, OnInstall {
       }
 
       const newUser = await this.usersService.add(user);
+      if (!newUser) {
+        return false;
+      }
 
       //  await this.usersService.findOne(user.email);
-      return newUser;
+      const token = sign(newUser.id, "app");
+      $log.info("this is token", token);
+      return token;
     } catch (error) {
       $log.error(error);
     }

@@ -1,8 +1,8 @@
-import {Controller, Inject, Post, Req, $log, Get} from "@tsed/common";
+import {Controller, Inject, Post, Req, $log, Get, BodyParams, PathParams} from "@tsed/common";
 import {UserService} from "../services/UserService";
 import {Authenticate, Authorize} from "@tsed/passport";
 import {User} from "../models/User";
-export const tempId = "5f549bc077ff7458309f1b5c";
+// export const tempId = "5f549bc077ff7458309f1b5c";
 @Controller("")
 export class UserController {
   constructor(@Inject(UserService) public userService: UserService) {}
@@ -24,13 +24,26 @@ export class UserController {
     }
   }
   @Get("/session")
-  // @Authorize("basic")
-  async getSession(@Req() req: Req) {
+  @Authorize("jwt")
+  async getSession(@Req("account") req: User) {
     try {
       // const user = req.user || {id: null};
       // $log.info(req.session);
       // return user;
-      const user = await this.userService.findById(tempId);
+      // const user = await this.userService.findById(tempId);
+      $log.info("session", req);
+      req.password = "";
+      return req;
+    } catch (error) {
+      $log.error(error);
+      return null;
+    }
+  }
+  @Get("/user/:id")
+  async getUser(@PathParams("id") id: String) {
+    try {
+      const user = await this.userService.findById(id);
+
       return user;
     } catch (error) {
       $log.error(error);

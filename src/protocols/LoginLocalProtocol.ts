@@ -1,10 +1,9 @@
-import {BodyParams, Req, Session, $log, Use, ConverterService, Inject} from "@tsed/common";
-import {OnInstall, OnVerify, Protocol, PassportSerializerService, UserInfo} from "@tsed/passport";
-import {IStrategyOptions, Strategy, VerifyFunctionWithRequest, IVerifyOptions} from "passport-local";
-import passport from "passport";
+import {BodyParams, Req, $log, Inject} from "@tsed/common";
+import {OnInstall, OnVerify, Protocol} from "@tsed/passport";
+import {IStrategyOptions, Strategy} from "passport-local";
 import {UserService} from "../services/UserService";
 import {ICredential} from "../models/ICredential";
-import {response} from "express";
+import {sign} from "jsonwebtoken";
 
 @Protocol<IStrategyOptions>({
   name: "login",
@@ -12,7 +11,7 @@ import {response} from "express";
   settings: {
     usernameField: "email",
     passwordField: "password",
-    session: true,
+    session: false,
   },
 })
 export class LoginLocalProtocol implements OnVerify, OnInstall {
@@ -37,7 +36,10 @@ export class LoginLocalProtocol implements OnVerify, OnInstall {
 
     $log.info("logged:", user);
     // sessionUser = user;
-    return user;
+
+    const token = sign(user.id, "app");
+    $log.info("this is token", token);
+    return token;
   }
 
   $onInstall(strategy: Strategy): void {
