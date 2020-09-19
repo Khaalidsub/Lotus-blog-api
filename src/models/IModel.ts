@@ -1,16 +1,18 @@
 import {$log} from "@tsed/common";
+import {Mongoose, Schema, SchemaType} from "mongoose";
 
 export interface IModel {
   _id: String;
 }
 
-export function autoPopulateAllFields(schema: any) {
+export function autoPopulateAllFields(schema: Schema) {
   var paths = "";
-  // $log.info("YOOO", schema);
+
   //checks every schema field path
-  schema.eachPath(function process(pathname: any, schemaType: any) {
+  schema.eachPath(function process(pathname: string, schemaType: any) {
     //if path is the id of the document, no need to check
     if (pathname == "_id") return;
+    // if (pathname === "likedPosts") $log.info("YOOO", schemaType.options, pathname);
     //if the field path has an option "ref", add it in the paths
     if (schemaType.options.ref) paths += " " + pathname;
   });

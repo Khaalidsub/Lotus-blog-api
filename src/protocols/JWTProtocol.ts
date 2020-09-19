@@ -18,10 +18,10 @@ export class JwtProtocol implements OnVerify {
   constructor(@Inject(UserService) public usersService: UserService) {}
 
   async $onVerify(@Req() req: Req, @Arg(0) jwtPayload: any) {
-    $log.info("i am here", jwtPayload, req.headers);
+    // $log.info("i am here", jwtPayload, req.headers);
     const user = await this.usersService.findOne({id: jwtPayload.sub});
-    $log.info("found", user);
-
+    // $log.info("found", user);
+    // user?.password = undefined
     return user ? user : false;
   }
 }

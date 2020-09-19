@@ -22,9 +22,10 @@ export class Post implements IModel {
   @Default("")
   image?: string;
   @Property()
-  likedPosts?: Ref<Post[]>;
-  @Property()
-  bookMarkedPosts?: Ref<Post[]>;
+  @Default(0)
+  bookMarks?: Number;
+  @Default(0)
+  likes?: Number;
   @Ref(Category)
   category: Ref<Category>;
   @Ref(User)

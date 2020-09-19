@@ -1,28 +1,21 @@
-import {Controller, Get, Post, Inject, PathParams, BodyParams, Delete, $log, Req, Put} from "@tsed/common";
+import {Controller, Get, Post, Inject, PathParams, BodyParams, Delete, $log, Put} from "@tsed/common";
 import {Post as Posts} from "../models/Post";
 import {PostService} from "../services/PostService";
 import {Authorize} from "@tsed/passport";
 import {User} from "../models/User";
+import {UserService} from "../services/UserService";
 // import {tempId} from "./AuthController";
 
 @Controller("/posts")
 export class PostController {
-  constructor(@Inject(PostService) private service: PostService) {}
+  constructor(@Inject(PostService) private service: PostService, @Inject(UserService) public userService: UserService) {}
   @Get()
   async getAll() {
     const posts = await this.service.find({});
 
     return posts;
   }
-  //get posts of the logged  user
-  // @Get("/my-posts")
-  // // @Authorize("basic")
-  // async getUserPosts(@Req("user") req: User) {
-  //   $log.info("session", req);
-  //   const posts = await this.service.find({user: tempId});
 
-  //   return posts;
-  // }
   //get the posts of another user
   @Get("/user-posts/:id")
   async getProfilePosts(@PathParams("id") id: String) {
@@ -56,6 +49,12 @@ export class PostController {
   @Authorize("jwt")
   async delete(@PathParams("id") id: String) {
     const response = await this.service.delete(id);
+    const users = (await this.userService.find({})) as User[];
+    users.map((user) => {
+      user.likedPosts = user.likedPosts?.filter((postId) => postId !== id);
+      user.bookMarkedPosts = user.bookMarkedPosts?.filter((postId) => postId !== id);
+      return user;
+    });
     return response;
   }
 }

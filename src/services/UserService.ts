@@ -12,6 +12,7 @@ export class UserService extends GenericService<User> {
   }
   async findOne(email: any) {
     try {
+      // this.model.findOne(email).populate
       return this.model.findOne(email);
     } catch (error) {
       $log.error(error);

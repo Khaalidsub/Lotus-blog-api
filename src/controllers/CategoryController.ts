@@ -17,7 +17,7 @@ export class CategoryController {
   }
 
   @Post()
-  async add(@BodyParams("category") category: Category) {
+  async add(@BodyParams() category: Category) {
     const newPost = await this.service.add(category);
     return newPost;
   }

@@ -1,8 +1,10 @@
 import {Property, IgnoreProperty, Default} from "@tsed/common";
-import {Model, ObjectID} from "@tsed/mongoose";
-import {IModel} from "./IModel";
+import {Model, MongoosePlugin, ObjectID, Ref} from "@tsed/mongoose";
+import {autoPopulateAllFields, IModel} from "./IModel";
+import {Post} from "./Post";
 
 @Model()
+@MongoosePlugin(autoPopulateAllFields)
 export class User implements IModel {
   @ObjectID("id")
   _id: string;
@@ -15,6 +17,14 @@ export class User implements IModel {
   @Property()
   @Default("")
   image?: string;
+  @Property()
+  // @Ref(Post)
+  @Default([])
+  likedPosts?: string[];
+  @Property()
+  // @Ref(Post)
+  @Default([])
+  bookMarkedPosts?: string[];
   verifyPassword(password: string) {
     return this.password === password;
   }
