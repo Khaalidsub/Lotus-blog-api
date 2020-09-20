@@ -29,7 +29,7 @@ export class LoginLocalProtocol implements OnVerify, OnInstall {
     }
     // response.cookie =
 
-    if (!user.verifyPassword(password)) {
+    if (!(await user.verifyPassword(password))) {
       // OR throw new NotAuthorized("Wrong credentials")
       return false;
     }

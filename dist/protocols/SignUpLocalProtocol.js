@@ -9,6 +9,8 @@ const exceptions_1 = require("@tsed/exceptions");
 const UserService_1 = require("../services/UserService");
 const User_1 = require("../models/User");
 const jsonwebtoken_1 = require("jsonwebtoken");
+const bcrypt_1 = require("bcrypt");
+const saltRounds = 10;
 let SignupLocalProtocol = class SignupLocalProtocol {
     constructor(usersService) {
         this.usersService = usersService;
@@ -22,6 +24,8 @@ let SignupLocalProtocol = class SignupLocalProtocol {
                 if (found) {
                     throw new exceptions_1.Forbidden("Email is already registered");
                 }
+                const password = yield bcrypt_1.hash(user.password, saltRounds);
+                user.password = password;
                 const newUser = yield this.usersService.add(user);
                 if (!newUser) {
                     return false;

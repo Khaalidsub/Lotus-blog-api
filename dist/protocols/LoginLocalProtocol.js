@@ -22,7 +22,7 @@ let LoginLocalProtocol = class LoginLocalProtocol {
                 // OR throw new NotAuthorized("Wrong credentials")
             }
             // response.cookie =
-            if (!user.verifyPassword(password)) {
+            if (!(yield user.verifyPassword(password))) {
                 // OR throw new NotAuthorized("Wrong credentials")
                 return false;
             }

@@ -5,9 +5,12 @@ const tslib_1 = require("tslib");
 const common_1 = require("@tsed/common");
 const mongoose_1 = require("@tsed/mongoose");
 const IModel_1 = require("./IModel");
+const bcrypt_1 = require("bcrypt");
 let User = class User {
     verifyPassword(password) {
-        return this.password === password;
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return bcrypt_1.compare(password, this.password);
+        });
     }
 };
 tslib_1.__decorate([

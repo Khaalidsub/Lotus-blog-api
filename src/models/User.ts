@@ -1,8 +1,7 @@
-import {Property, IgnoreProperty, Default} from "@tsed/common";
-import {Model, MongoosePlugin, ObjectID, Ref} from "@tsed/mongoose";
+import {Property, Default} from "@tsed/common";
+import {Model, MongoosePlugin, ObjectID} from "@tsed/mongoose";
 import {autoPopulateAllFields, IModel} from "./IModel";
-import {Post} from "./Post";
-
+import {compare} from "bcrypt";
 @Model()
 @MongoosePlugin(autoPopulateAllFields)
 export class User implements IModel {
@@ -25,7 +24,7 @@ export class User implements IModel {
   // @Ref(Post)
   @Default([])
   bookMarkedPosts?: string[];
-  verifyPassword(password: string) {
-    return this.password === password;
+  async verifyPassword(password: string) {
+    return compare(password, this.password);
   }
 }

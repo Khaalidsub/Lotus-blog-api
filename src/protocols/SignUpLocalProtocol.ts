@@ -5,6 +5,8 @@ import {Forbidden} from "@tsed/exceptions";
 import {UserService} from "../services/UserService";
 import {User} from "../models/User";
 import {sign} from "jsonwebtoken";
+import {hash} from "bcrypt";
+const saltRounds = 10;
 @Protocol<IStrategyOptions>({
   name: "signup",
   useStrategy: Strategy,
@@ -26,7 +28,8 @@ export class SignupLocalProtocol implements OnVerify, OnInstall {
       if (found) {
         throw new Forbidden("Email is already registered");
       }
-
+      const password = await hash(user.password, saltRounds);
+      user.password = password;
       const newUser = await this.usersService.add(user);
       if (!newUser) {
         return false;
