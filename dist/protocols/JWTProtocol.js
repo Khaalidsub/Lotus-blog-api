@@ -12,9 +12,10 @@ let JwtProtocol = class JwtProtocol {
     }
     $onVerify(req, jwtPayload) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            common_1.$log.info("i am here", jwtPayload, req.headers);
+            // $log.info("i am here", jwtPayload, req.headers);
             const user = yield this.usersService.findOne({ id: jwtPayload.sub });
-            common_1.$log.info("found", user);
+            // $log.info("found", user);
+            // user?.password = undefined
             return user ? user : false;
         });
     }

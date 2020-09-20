@@ -13,9 +13,7 @@ import mongooseConfig from "./config/mongoose";
 import * as session from "express-session";
 import * as Mongo from "connect-mongo";
 const MongoStore = Mongo(session);
-
 import {User} from "./models/User";
-import {CreateRequestSessionMiddleware} from "./middlewares/CreateRequestSession";
 
 export const rootDir = __dirname;
 
@@ -38,6 +36,7 @@ export const rootDir = __dirname;
     userInfoModel: User,
   },
   mongoose: mongooseConfig,
+  multer: {},
   exclude: ["**/*.spec.ts"],
 })
 export class Server {

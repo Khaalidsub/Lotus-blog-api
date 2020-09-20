@@ -37,12 +37,13 @@ tslib_1.__decorate([
 ], Post.prototype, "image", void 0);
 tslib_1.__decorate([
     common_1.Property(),
-    tslib_1.__metadata("design:type", Object)
-], Post.prototype, "likedPosts", void 0);
+    common_1.Default(0),
+    tslib_1.__metadata("design:type", Number)
+], Post.prototype, "bookMarks", void 0);
 tslib_1.__decorate([
-    common_1.Property(),
-    tslib_1.__metadata("design:type", Object)
-], Post.prototype, "bookMarkedPosts", void 0);
+    common_1.Default(0),
+    tslib_1.__metadata("design:type", Number)
+], Post.prototype, "likes", void 0);
 tslib_1.__decorate([
     mongoose_1.Ref(Category_1.Category),
     tslib_1.__metadata("design:type", Object)

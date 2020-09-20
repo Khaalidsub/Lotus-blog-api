@@ -49,7 +49,7 @@ tslib_1.__decorate([
 ], CategoryController.prototype, "get", null);
 tslib_1.__decorate([
     common_1.Post(),
-    tslib_1.__param(0, common_1.BodyParams("category")),
+    tslib_1.__param(0, common_1.BodyParams()),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [Category_1.Category]),
     tslib_1.__metadata("design:returntype", Promise)

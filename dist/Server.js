@@ -80,6 +80,7 @@ Server = tslib_1.__decorate([
             userInfoModel: User_1.User,
         },
         mongoose: mongoose_1.default,
+        multer: {},
         exclude: ["**/*.spec.ts"],
     })
 ], Server);

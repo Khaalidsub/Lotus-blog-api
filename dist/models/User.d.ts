@@ -5,5 +5,7 @@ export declare class User implements IModel {
     email: string;
     password: string;
     image?: string;
+    likedPosts?: string[];
+    bookMarkedPosts?: string[];
     verifyPassword(password: string): boolean;
 }

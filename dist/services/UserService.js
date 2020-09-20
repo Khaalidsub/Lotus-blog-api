@@ -15,6 +15,7 @@ let UserService = class UserService extends GenericService_1.GenericService {
     findOne(email) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
+                // this.model.findOne(email).populate
                 return this.model.findOne(email);
             }
             catch (error) {

@@ -9,8 +9,8 @@ export declare class Post implements IModel {
     blocks: [];
     createdAt?: Date;
     image?: string;
-    likedPosts?: Ref<Post[]>;
-    bookMarkedPosts?: Ref<Post[]>;
+    bookMarks?: Number;
+    likes?: Number;
     category: Ref<Category>;
     user: Ref<User>;
 }

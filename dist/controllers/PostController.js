@@ -6,10 +6,12 @@ const common_1 = require("@tsed/common");
 const Post_1 = require("../models/Post");
 const PostService_1 = require("../services/PostService");
 const passport_1 = require("@tsed/passport");
+const UserService_1 = require("../services/UserService");
 // import {tempId} from "./AuthController";
 let PostController = class PostController {
-    constructor(service) {
+    constructor(service, userService) {
         this.service = service;
+        this.userService = userService;
     }
     getAll() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -17,14 +19,6 @@ let PostController = class PostController {
             return posts;
         });
     }
-    //get posts of the logged  user
-    // @Get("/my-posts")
-    // // @Authorize("basic")
-    // async getUserPosts(@Req("user") req: User) {
-    //   $log.info("session", req);
-    //   const posts = await this.service.find({user: tempId});
-    //   return posts;
-    // }
     //get the posts of another user
     getProfilePosts(id) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -56,6 +50,13 @@ let PostController = class PostController {
     delete(id) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const response = yield this.service.delete(id);
+            const users = (yield this.userService.find({}));
+            users.map((user) => {
+                var _a, _b;
+                user.likedPosts = (_a = user.likedPosts) === null || _a === void 0 ? void 0 : _a.filter((postId) => postId !== id);
+                user.bookMarkedPosts = (_b = user.bookMarkedPosts) === null || _b === void 0 ? void 0 : _b.filter((postId) => postId !== id);
+                return user;
+            });
             return response;
         });
     }
@@ -106,8 +107,8 @@ tslib_1.__decorate([
 ], PostController.prototype, "delete", null);
 PostController = tslib_1.__decorate([
     common_1.Controller("/posts"),
-    tslib_1.__param(0, common_1.Inject(PostService_1.PostService)),
-    tslib_1.__metadata("design:paramtypes", [PostService_1.PostService])
+    tslib_1.__param(0, common_1.Inject(PostService_1.PostService)), tslib_1.__param(1, common_1.Inject(UserService_1.UserService)),
+    tslib_1.__metadata("design:paramtypes", [PostService_1.PostService, UserService_1.UserService])
 ], PostController);
 exports.PostController = PostController;
 //# sourceMappingURL=PostController.js.map
