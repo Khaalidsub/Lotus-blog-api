@@ -51,10 +51,9 @@ export class Server {
     this.app
       .use(
         cors({
-          credentials: true,
-          origin: ["http://www.lotus-blogs.com", "https://www.lotus-blogs.com", "https://www.focused-borg-7fa9ff.netlify.app"],
-
-          maxAge: 36000 * 60 * 24,
+          // credentials: true,
+          // origin: ["http://www.lotus-blogs.com", "https://www.lotus-blogs.com", "https://www.focused-borg-7fa9ff.netlify.app"],
+          // maxAge: 36000 * 60 * 24,
         })
       )
       .use(GlobalAcceptMimesMiddleware)
