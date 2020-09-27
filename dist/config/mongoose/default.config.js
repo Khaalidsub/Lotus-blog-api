@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
-    id: "default",
-    url: process.env.DEFAULT_URL || "mongodb://localhost:27017/default",
+    id: "admin",
+    url: process.env.DEFAULT_URL || "mongodb://[lotus:tj.Vnp*J52w69r_g]localhost:27017/admin",
     connectionOptions: {
         useNewUrlParser: true,
         useUnifiedTopology: true,
