@@ -21,15 +21,13 @@ COPY package.json .
 COPY yarn.lock .
 COPY ./src ./src
 COPY ./dist ./dist
-# COPY ./resources ./resources
-# COPY ./spec ./spec
-
 RUN yarn install --production
 # RUN yarn build
+
 
 
 EXPOSE 8081
 ENV PORT 8081
 ENV NODE_ENV production
-ENV DEFAULT_URL mongodb://172.17.0.2:27017/default
+ENV DEFAULT_URL mongodb://lotus:tj.Vnp*J52w69r_g@172.25.0.2:27017/blogs?authSource=admin
 CMD ["yarn", "start:prod"]

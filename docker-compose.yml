@@ -25,4 +25,4 @@ services:
       - /data/db:/mongodat
     ports:
       - "27017:27017"
-    # command: [--auth]
+    command: [--auth]
