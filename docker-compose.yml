@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 services:
   server:
     build:
@@ -8,12 +8,21 @@ services:
         - http_proxy
         - https_proxy
         - no_proxy
-    image: 'ts-ed-test/server:latest'
+    image: "ts-ed-test/server:latest"
+    container_name: blogs
     ports:
-      - '8081:8081'
+      - "8081:8081"
     stdin_open: true
     tty: true
   mongodb:
-    image: 'mongo:4.1'
+    image: "mongo:4.4"
+    container_name: mongodb
+    restart: always
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: lotus
+    #   MONGO_INITDB_ROOT_PASSWORD: tj.Vnp*J52w69r_g
+    volumes:
+      - /data/db:/mongodat
     ports:
-      - '27017:27017'
+      - "27017:27017"
+    # command: [--auth]
