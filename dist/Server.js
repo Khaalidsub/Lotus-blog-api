@@ -24,9 +24,8 @@ let Server = class Server {
         // this.app.raw.set("trust proxy", 1);
         this.app
             .use(cors({
-        // credentials: true,
-        // origin: ["http://www.lotus-blogs.com", "https://www.lotus-blogs.com", "https://www.focused-borg-7fa9ff.netlify.app"],
-        // maxAge: 36000 * 60 * 24,
+            // credentials: true,
+            origin: ["https://www.lotus-blogs.com", "https://lotus-blogs.com", "https://www.focused-borg-7fa9ff.netlify.app"],
         }))
             .use(platform_express_1.GlobalAcceptMimesMiddleware)
             .use(cookieParser())

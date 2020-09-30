@@ -52,7 +52,7 @@ export class Server {
       .use(
         cors({
           // credentials: true,
-          // origin: ["http://www.lotus-blogs.com", "https://www.lotus-blogs.com", "https://www.focused-borg-7fa9ff.netlify.app"],
+          origin: ["https://www.lotus-blogs.com", "https://lotus-blogs.com", "https://www.focused-borg-7fa9ff.netlify.app"],
           // maxAge: 36000 * 60 * 24,
         })
       )
