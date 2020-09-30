@@ -1,5 +1,5 @@
-const Key_ID = "AKIAI7KJ3RE27L4TQDZQ";
-const Access_Key = "tFbESXj0YNz0sCkVIp2IzyqINlooojeQoDFB5+Wk";
+const Key_ID = process.env.KEY;
+const Access_Key = process.env.ACCESS;
 import {S3} from "aws-sdk";
 
 export const s3 = new S3({

@@ -21,7 +21,7 @@ let UploadController = class UploadController {
             const fileContent = fs_1.readFileSync(showFile);
             const fileUpload = `posts/${file.originalname}`;
             const params = {
-                Bucket: "campus-blog",
+                Bucket: "lotus-blogs",
                 Key: fileUpload,
                 Body: fileContent,
                 ACL: "public-read",
@@ -37,6 +37,23 @@ let UploadController = class UploadController {
             };
         });
     }
+    delete(name) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const params = {
+                Bucket: "blog",
+                Key: name,
+            };
+            try {
+                const result = yield aws_1.s3.deleteObject(params).promise();
+                return result.DeleteMarker;
+            }
+            catch (error) {
+                common_1.$log.error(error);
+                return error;
+            }
+            // $log.info("file", result);
+        });
+    }
 };
 tslib_1.__decorate([
     common_1.Post("/upload"),
@@ -46,6 +63,13 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:paramtypes", [Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], UploadController.prototype, "add", null);
+tslib_1.__decorate([
+    common_1.Delete("/delete/:name"),
+    tslib_1.__param(0, common_1.PathParams("name")),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [String]),
+    tslib_1.__metadata("design:returntype", Promise)
+], UploadController.prototype, "delete", null);
 UploadController = tslib_1.__decorate([
     common_1.Controller("/file")
 ], UploadController);

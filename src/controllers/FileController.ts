@@ -1,8 +1,10 @@
-import {$log, Controller, Post} from "@tsed/common";
+import {$log, Controller, Delete, PathParams, Post} from "@tsed/common";
 import {MulterOptions, MultipartFile} from "@tsed/multipartfiles";
 import {rename as ren, readFileSync} from "fs";
 import {s3} from "../config/aws";
 import {promisify} from "util";
+import {S3} from "aws-sdk";
+import {log} from "console";
 const rename = promisify(ren);
 // const uploadFile = promisify(capella.uploadFile);
 @Controller("/file")
@@ -22,13 +24,14 @@ export class UploadController {
     const fileUpload = `posts/${file.originalname}`;
 
     const params = {
-      Bucket: "campus-blog",
+      Bucket: "lotus-blogs",
       Key: fileUpload,
       Body: fileContent,
       ACL: "public-read",
       contentType: file.mimetype,
     };
     const result = await s3.upload(params).promise();
+
     // $log.info("file", result);
 
     return {
@@ -37,5 +40,23 @@ export class UploadController {
         url: result.Location,
       },
     };
+  }
+  @Delete("/delete/:name")
+  async delete(@PathParams("name") name: string): Promise<any> {
+    const params = {
+      Bucket: "blog",
+      Key: name,
+    };
+    try {
+      const result = await s3.deleteObject(params).promise();
+
+      return result.DeleteMarker;
+    } catch (error) {
+      $log.error(error);
+
+      return error;
+    }
+
+    // $log.info("file", result);
   }
 }
