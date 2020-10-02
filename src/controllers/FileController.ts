@@ -1,16 +1,20 @@
-import {$log, Controller, Delete, PathParams, Post} from "@tsed/common";
+import {$log, Controller, Delete, PathParams, Post, Req} from "@tsed/common";
 import {MulterOptions, MultipartFile} from "@tsed/multipartfiles";
 import {rename as ren, readFileSync} from "fs";
 import {s3} from "../config/aws";
 import {promisify} from "util";
+import {bucket} from "../config/firebase";
+import {Authorize} from "@tsed/passport";
+import {User} from "../models/User";
 
 const rename = promisify(ren);
 // const uploadFile = promisify(capella.uploadFile);
 @Controller("/file")
 export class UploadController {
   @Post("/upload")
+  @Authorize("jwt")
   @MulterOptions({dest: `${process.cwd()}/images`})
-  async add(@MultipartFile() file: Express.Multer.File): Promise<any> {
+  async add(@MultipartFile() file: Express.Multer.File, @Req("account") req: User): Promise<any> {
     // $log.info("in adding an image", file);
     // rename(file.path,'')
     const pos = file.path.lastIndexOf(".");
@@ -20,23 +24,24 @@ export class UploadController {
 
     await rename(file.path, `${process.cwd()}/images/${file.filename}.jpg`);
     const fileContent = readFileSync(showFile);
-    const fileUpload = `posts/${file.originalname}`;
+    const fileUpload = `${req.email}/${file.originalname}`;
 
-    const params = {
-      Bucket: "lotus-blogs",
-      Key: fileUpload,
-      Body: fileContent,
-      ACL: "public-read",
-      contentType: file.mimetype,
-    };
-    const result = await s3.upload(params).promise();
+    // const params = {
+    //   Bucket: "lotus-blogs",
+    //   Key: fileUpload,
+    //   Body: fileContent,
+    //   ACL: "public-read",
+    //   contentType: file.mimetype,
+    // };
+    const result = await bucket.upload(fileUpload, {contentType: file.mimetype, public: true});
+    // const result = await s3.upload(params).promise();
 
-    // $log.info("file", result);
+    $log.info("file uploaded", result);
 
     return {
       success: 1,
       file: {
-        url: result.Location,
+        url: result[0].baseUrl,
       },
     };
   }

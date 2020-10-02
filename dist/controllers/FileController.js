@@ -7,10 +7,13 @@ const multipartfiles_1 = require("@tsed/multipartfiles");
 const fs_1 = require("fs");
 const aws_1 = require("../config/aws");
 const util_1 = require("util");
+const firebase_1 = require("../config/firebase");
+const passport_1 = require("@tsed/passport");
+const User_1 = require("../models/User");
 const rename = util_1.promisify(fs_1.rename);
 // const uploadFile = promisify(capella.uploadFile);
 let UploadController = class UploadController {
-    add(file) {
+    add(file, req) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             // $log.info("in adding an image", file);
             // rename(file.path,'')
@@ -19,20 +22,21 @@ let UploadController = class UploadController {
                 file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
             yield rename(file.path, `${process.cwd()}/images/${file.filename}.jpg`);
             const fileContent = fs_1.readFileSync(showFile);
-            const fileUpload = `posts/${file.originalname}`;
-            const params = {
-                Bucket: "lotus-blogs",
-                Key: fileUpload,
-                Body: fileContent,
-                ACL: "public-read",
-                contentType: file.mimetype,
-            };
-            const result = yield aws_1.s3.upload(params).promise();
-            // $log.info("file", result);
+            const fileUpload = `${req.email}/${file.originalname}`;
+            // const params = {
+            //   Bucket: "lotus-blogs",
+            //   Key: fileUpload,
+            //   Body: fileContent,
+            //   ACL: "public-read",
+            //   contentType: file.mimetype,
+            // };
+            const result = yield firebase_1.bucket.upload(fileUpload, { contentType: file.mimetype, public: true });
+            // const result = await s3.upload(params).promise();
+            common_1.$log.info("file uploaded", result);
             return {
                 success: 1,
                 file: {
-                    url: result.Location,
+                    url: result[0].baseUrl,
                 },
             };
         });
@@ -57,10 +61,11 @@ let UploadController = class UploadController {
 };
 tslib_1.__decorate([
     common_1.Post("/upload"),
+    passport_1.Authorize("jwt"),
     multipartfiles_1.MulterOptions({ dest: `${process.cwd()}/images` }),
-    tslib_1.__param(0, multipartfiles_1.MultipartFile()),
+    tslib_1.__param(0, multipartfiles_1.MultipartFile()), tslib_1.__param(1, common_1.Req("account")),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Object]),
+    tslib_1.__metadata("design:paramtypes", [Object, User_1.User]),
     tslib_1.__metadata("design:returntype", Promise)
 ], UploadController.prototype, "add", null);
 tslib_1.__decorate([
