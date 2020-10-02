@@ -3,8 +3,7 @@ import {MulterOptions, MultipartFile} from "@tsed/multipartfiles";
 import {rename as ren, readFileSync} from "fs";
 import {s3} from "../config/aws";
 import {promisify} from "util";
-import {S3} from "aws-sdk";
-import {log} from "console";
+
 const rename = promisify(ren);
 // const uploadFile = promisify(capella.uploadFile);
 @Controller("/file")

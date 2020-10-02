@@ -21,7 +21,7 @@ export const rootDir = __dirname;
   rootDir,
   acceptMimes: ["application/json"],
   httpPort: process.env.PORT || 8083,
-  httpsPort: true, // CHANGE
+  httpsPort: 8081, // CHANGE
 
   componentsScan: [
     `${rootDir}/protocols/**/*.ts`,
@@ -47,14 +47,14 @@ export class Server {
   settings: Configuration;
 
   $beforeRoutesInit() {
-    // this.app.raw.set("trust proxy", 1);
+    this.app.raw.set("trust proxy", 1);
     this.app
       .use(
         cors({
           credentials: true,
           origin: [
             "https://www.lotus-blogs.com",
-            "localhost:3000",
+            "http://localhost:3000",
             "https://lotus-blogs.com",
             "https://www.focused-borg-7fa9ff.netlify.app",
           ],

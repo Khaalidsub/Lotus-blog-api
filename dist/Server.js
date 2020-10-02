@@ -21,13 +21,13 @@ const User_1 = require("./models/User");
 exports.rootDir = __dirname;
 let Server = class Server {
     $beforeRoutesInit() {
-        // this.app.raw.set("trust proxy", 1);
+        this.app.raw.set("trust proxy", 1);
         this.app
             .use(cors({
             credentials: true,
             origin: [
                 "https://www.lotus-blogs.com",
-                "localhost:3000",
+                "http://localhost:3000",
                 "https://lotus-blogs.com",
                 "https://www.focused-borg-7fa9ff.netlify.app",
             ],
@@ -71,7 +71,7 @@ Server = tslib_1.__decorate([
         rootDir: exports.rootDir,
         acceptMimes: ["application/json"],
         httpPort: process.env.PORT || 8083,
-        httpsPort: true,
+        httpsPort: 8081,
         componentsScan: [
             `${exports.rootDir}/protocols/**/*.ts`,
             `${exports.rootDir}/services/**/*.ts`,
