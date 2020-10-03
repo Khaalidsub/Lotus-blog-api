@@ -30,9 +30,10 @@ let UploadController = class UploadController {
             //   ACL: "public-read",
             //   contentType: file.mimetype,
             // };
-            const result = yield firebase_1.bucket.upload(fileUpload, { contentType: file.mimetype, public: true });
+            //!needs to fix and rename this,after this think why iti was not working
+            const result = yield firebase_1.bucket.upload(showFile, { contentType: file.mimetype, public: true });
             // const result = await s3.upload(params).promise();
-            common_1.$log.info("file uploaded", result);
+            common_1.$log.info("file uploaded", result, showFile);
             return {
                 success: 1,
                 file: {
