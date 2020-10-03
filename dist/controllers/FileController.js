@@ -15,31 +15,30 @@ const rename = util_1.promisify(fs_1.rename);
 let UploadController = class UploadController {
     add(file, req) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            // $log.info("in adding an image", file);
-            // rename(file.path,'')
-            const pos = file.path.lastIndexOf(".");
-            const showFile = file.path.substr(0, pos < 0 ? file.path.length : pos) +
-                file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
-            yield rename(file.path, `${process.cwd()}/images/${file.filename}.jpg`);
-            const fileContent = fs_1.readFileSync(showFile);
-            const fileUpload = `${req.email}/${file.originalname}`;
-            // const params = {
-            //   Bucket: "lotus-blogs",
-            //   Key: fileUpload,
-            //   Body: fileContent,
-            //   ACL: "public-read",
-            //   contentType: file.mimetype,
-            // };
-            //!needs to fix and rename this,after this think why iti was not working
-            const result = yield firebase_1.bucket.upload(showFile, { contentType: file.mimetype, public: true });
-            // const result = await s3.upload(params).promise();
-            common_1.$log.info("file uploaded", result, showFile);
-            return {
-                success: 1,
-                file: {
-                    url: result[0].baseUrl,
-                },
-            };
+            common_1.$log.info("in adding an image", file, process.cwd());
+            try {
+                const pos = file.path.lastIndexOf(".");
+                const showFile = file.path.substr(0, pos < 0 ? file.path.length : pos) +
+                    file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
+                yield rename(file.path, `${process.cwd()}/images/${file.filename}.jpg`);
+                const fileContent = fs_1.readFileSync(showFile);
+                const fileUpload = `${req.email}/${file.originalname}`;
+                //!needs to fix and rename this,after this think why iti was not working
+                common_1.$log.info("file uploaded", showFile, fileContent);
+                const result = yield firebase_1.bucket.upload(showFile, { contentType: file.mimetype, public: true });
+                return {
+                    success: 1,
+                    file: {
+                        url: result[0].baseUrl,
+                    },
+                };
+            }
+            catch (error) {
+                common_1.$log.error(error);
+                return {
+                    success: 0,
+                };
+            }
         });
     }
     delete(name) {
@@ -63,7 +62,7 @@ let UploadController = class UploadController {
 tslib_1.__decorate([
     common_1.Post("/upload"),
     passport_1.Authorize("jwt"),
-    multipartfiles_1.MulterOptions({ dest: `${process.cwd()}/images` }),
+    multipartfiles_1.MulterOptions({ dest: `/images` }),
     tslib_1.__param(0, multipartfiles_1.MultipartFile()), tslib_1.__param(1, common_1.Req("account")),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [Object, User_1.User]),

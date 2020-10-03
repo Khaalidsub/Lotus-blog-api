@@ -13,37 +13,36 @@ const rename = promisify(ren);
 export class UploadController {
   @Post("/upload")
   @Authorize("jwt")
-  @MulterOptions({dest: `${process.cwd()}/images`})
+  @MulterOptions({dest: `/images`})
   async add(@MultipartFile() file: Express.Multer.File, @Req("account") req: User): Promise<any> {
-    // $log.info("in adding an image", file);
-    // rename(file.path,'')
-    const pos = file.path.lastIndexOf(".");
-    const showFile =
-      file.path.substr(0, pos < 0 ? file.path.length : pos) +
-      file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
+    $log.info("in adding an image", file, process.cwd());
 
-    await rename(file.path, `${process.cwd()}/images/${file.filename}.jpg`);
-    const fileContent = readFileSync(showFile);
-    const fileUpload = `${req.email}/${file.originalname}`;
+    try {
+      const pos = file.path.lastIndexOf(".");
+      const showFile =
+        file.path.substr(0, pos < 0 ? file.path.length : pos) +
+        file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
 
-    // const params = {
-    //   Bucket: "lotus-blogs",
-    //   Key: fileUpload,
-    //   Body: fileContent,
-    //   ACL: "public-read",
-    //   contentType: file.mimetype,
-    // };
-    //!needs to fix and rename this,after this think why iti was not working
-    $log.info("file uploaded", showFile, fileContent);
-    const result = await bucket.upload(showFile, {contentType: file.mimetype, public: true});
-    // const result = await s3.upload(params).promise();
+      await rename(file.path, `${process.cwd()}/images/${file.filename}.jpg`);
+      const fileContent = readFileSync(showFile);
+      const fileUpload = `${req.email}/${file.originalname}`;
 
-    return {
-      success: 1,
-      file: {
-        url: result[0].baseUrl,
-      },
-    };
+      //!needs to fix and rename this,after this think why iti was not working
+      $log.info("file uploaded", showFile, fileContent);
+      const result = await bucket.upload(showFile, {contentType: file.mimetype, public: true});
+
+      return {
+        success: 1,
+        file: {
+          url: result[0].baseUrl,
+        },
+      };
+    } catch (error) {
+      $log.error(error);
+      return {
+        success: 0,
+      };
+    }
   }
   @Delete("/delete/:name")
   async delete(@PathParams("name") name: string): Promise<any> {
