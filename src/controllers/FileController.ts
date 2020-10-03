@@ -23,7 +23,7 @@ export class UploadController {
         file.path.substr(0, pos < 0 ? file.path.length : pos) +
         file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
 
-      await rename(file.path, `${process.cwd()}/images/${file.filename}.jpg`);
+      await rename(file.path, `/images/${file.filename}.jpg`);
       const fileContent = readFileSync(showFile);
       const fileUpload = `${req.email}/${file.originalname}`;
 

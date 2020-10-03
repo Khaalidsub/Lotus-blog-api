@@ -20,7 +20,7 @@ let UploadController = class UploadController {
                 const pos = file.path.lastIndexOf(".");
                 const showFile = file.path.substr(0, pos < 0 ? file.path.length : pos) +
                     file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
-                yield rename(file.path, `${process.cwd()}/images/${file.filename}.jpg`);
+                yield rename(file.path, `/images/${file.filename}.jpg`);
                 const fileContent = fs_1.readFileSync(showFile);
                 const fileUpload = `${req.email}/${file.originalname}`;
                 //!needs to fix and rename this,after this think why iti was not working
