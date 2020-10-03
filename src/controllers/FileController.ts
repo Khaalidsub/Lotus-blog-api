@@ -34,11 +34,9 @@ export class UploadController {
     //   contentType: file.mimetype,
     // };
     //!needs to fix and rename this,after this think why iti was not working
-
+    $log.info("file uploaded", showFile, fileContent);
     const result = await bucket.upload(showFile, {contentType: file.mimetype, public: true});
     // const result = await s3.upload(params).promise();
-
-    $log.info("file uploaded", result, showFile);
 
     return {
       success: 1,
