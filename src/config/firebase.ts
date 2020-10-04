@@ -1,4 +1,4 @@
-import {initializeApp} from "firebase-admin";
+import * as admin from "firebase-admin";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -12,5 +12,6 @@ const firebaseConfig = {
   measurementId: "G-JNFJ37XFH9",
 };
 
-export const admin = initializeApp(firebaseConfig);
-export const bucket = admin.storage().bucket();
+export const bucket = admin.initializeApp(firebaseConfig).storage().bucket("images");
+// export const bucket = admin.storage().bucket();
+// export const bucket = storage()
