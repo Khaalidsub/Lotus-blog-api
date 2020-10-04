@@ -13,22 +13,22 @@ const rename = promisify(ren);
 export class UploadController {
   @Post("/upload")
   @Authorize("jwt")
-  @MulterOptions({dest: `/images`})
+  @MulterOptions({dest: process.env.IMAGEDIR || `/images`})
   async add(@MultipartFile() file: Express.Multer.File, @Req("account") req: User): Promise<any> {
-    $log.info("in adding an image", file, process.cwd());
+    $log.info("in adding an image", file);
 
     try {
       const pos = file.path.lastIndexOf(".");
-      const showFile =
-        file.path.substr(0, pos < 0 ? file.path.length : pos) +
-        file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
+      const showFile = file.path.substr(0, pos < 0 ? file.path.length : pos) + "jpg";
+      // file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
 
-      await rename(file.path, `/images/${file.filename}.jpg`);
-      const fileContent = readFileSync(showFile);
-      const fileUpload = `${req.email}/${file.originalname}`;
+      await rename(file.path, `${process.env.IMAGEDIR || "/images"}/${file.filename}.jpg`);
+      // const fileContent = readFileSync(showFile);
+      // const fileUpload = `${req.email}/${file.originalname}`;
 
       //!needs to fix and rename this,after this think why iti was not working
-      $log.info("file uploaded", showFile, fileContent);
+      $log.info("file uploaded", showFile);
+      // bucket.
       const result = await bucket.upload(showFile, {contentType: file.mimetype, public: true});
 
       return {

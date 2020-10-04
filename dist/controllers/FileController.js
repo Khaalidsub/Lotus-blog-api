@@ -15,16 +15,17 @@ const rename = util_1.promisify(fs_1.rename);
 let UploadController = class UploadController {
     add(file, req) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            common_1.$log.info("in adding an image", file, process.cwd());
+            common_1.$log.info("in adding an image", file);
             try {
                 const pos = file.path.lastIndexOf(".");
-                const showFile = file.path.substr(0, pos < 0 ? file.path.length : pos) +
-                    file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
-                yield rename(file.path, `/images/${file.filename}.jpg`);
-                const fileContent = fs_1.readFileSync(showFile);
-                const fileUpload = `${req.email}/${file.originalname}`;
+                const showFile = file.path.substr(0, pos < 0 ? file.path.length : pos) + "jpg";
+                // file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
+                yield rename(file.path, `${process.env.IMAGEDIR || "/images"}/${file.filename}.jpg`);
+                // const fileContent = readFileSync(showFile);
+                // const fileUpload = `${req.email}/${file.originalname}`;
                 //!needs to fix and rename this,after this think why iti was not working
-                common_1.$log.info("file uploaded", showFile, fileContent);
+                common_1.$log.info("file uploaded", showFile);
+                // bucket.
                 const result = yield firebase_1.bucket.upload(showFile, { contentType: file.mimetype, public: true });
                 return {
                     success: 1,
@@ -62,7 +63,7 @@ let UploadController = class UploadController {
 tslib_1.__decorate([
     common_1.Post("/upload"),
     passport_1.Authorize("jwt"),
-    multipartfiles_1.MulterOptions({ dest: `/images` }),
+    multipartfiles_1.MulterOptions({ dest: process.env.IMAGEDIR || `/images` }),
     tslib_1.__param(0, multipartfiles_1.MultipartFile()), tslib_1.__param(1, common_1.Req("account")),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [Object, User_1.User]),
