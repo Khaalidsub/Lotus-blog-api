@@ -18,7 +18,7 @@ let UploadController = class UploadController {
             common_1.$log.info("in adding an image", file);
             try {
                 const pos = file.path.lastIndexOf(".");
-                const showFile = file.path.substr(0, pos < 0 ? file.path.length : pos) + "jpg";
+                const showFile = file.path.substr(0, pos < 0 ? file.path.length : pos) + ".jpg";
                 // file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
                 yield rename(file.path, `${process.env.IMAGEDIR || "/images"}/${file.filename}.jpg`);
                 // const fileContent = readFileSync(showFile);

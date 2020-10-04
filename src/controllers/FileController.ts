@@ -19,7 +19,7 @@ export class UploadController {
 
     try {
       const pos = file.path.lastIndexOf(".");
-      const showFile = file.path.substr(0, pos < 0 ? file.path.length : pos) + "jpg";
+      const showFile = file.path.substr(0, pos < 0 ? file.path.length : pos) + ".jpg";
       // file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
 
       await rename(file.path, `${process.env.IMAGEDIR || "/images"}/${file.filename}.jpg`);

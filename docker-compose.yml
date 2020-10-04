@@ -10,6 +10,9 @@ services:
         - no_proxy
     image: "ts-ed-test/server:latest"
     container_name: blogs
+    volumes:
+      - /var/tools/public/images
+      - /var/tools/public
     ports:
       - "8081:8081"
     stdin_open: true
