@@ -1,5 +1,5 @@
 import {Configuration, Inject} from "@tsed/di";
-import {PlatformApplication} from "@tsed/common";
+import {$log, PlatformApplication} from "@tsed/common";
 import "@tsed/platform-express"; // /!\ keep this import
 import {GlobalAcceptMimesMiddleware} from "@tsed/platform-express";
 import * as bodyParser from "body-parser";
@@ -19,6 +19,22 @@ export const rootDir = __dirname;
 
 @Configuration({
   rootDir,
+  statics: {
+    "/images": [
+      {
+        root: `${process.env.IMAGEDIR || rootDir}/`,
+
+        // cacheControl: true,
+        extensions: [".jpg", ".png"],
+        setHeaders: (res, path, stat) => {
+          $log.info("in checking for images", path);
+
+          res.sendFile(path);
+        },
+        // ... statics options
+      },
+    ],
+  },
   acceptMimes: ["application/json"],
   httpPort: process.env.PORT || 8083,
   httpsPort: 8081, // CHANGE

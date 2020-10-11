@@ -69,6 +69,19 @@ tslib_1.__decorate([
 Server = tslib_1.__decorate([
     di_1.Configuration({
         rootDir: exports.rootDir,
+        statics: {
+            "/images": [
+                {
+                    root: `${process.env.IMAGEDIR || exports.rootDir}/`,
+                    cacheControl: true,
+                    extensions: [".jpg", ".png"],
+                    setHeaders: (res, path, stat) => {
+                        common_1.$log.info("in checking for images", path);
+                        res.sendFile(path);
+                    },
+                },
+            ],
+        },
         acceptMimes: ["application/json"],
         httpPort: process.env.PORT || 8083,
         httpsPort: 8081,

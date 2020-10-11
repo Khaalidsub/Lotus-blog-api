@@ -7,30 +7,48 @@ const multipartfiles_1 = require("@tsed/multipartfiles");
 const fs_1 = require("fs");
 const aws_1 = require("../config/aws");
 const util_1 = require("util");
-const firebase_1 = require("../config/firebase");
+// import {bucket} from "../config/firebase";
 const passport_1 = require("@tsed/passport");
 const User_1 = require("../models/User");
+const express_1 = require("express");
+const multer_1 = require("multer");
+// import * as uuid from "uuid-v4";
 const rename = util_1.promisify(fs_1.rename);
+// const metadata = {
+//   metadata: {
+//     // This line is very important. It's to create a download token.
+//     firebaseStorageDownloadTokens: uuid(),
+//   },
+//   contentType: "image/png",
+//   cacheControl: "public, max-age=31536000",
+// };
 // const uploadFile = promisify(capella.uploadFile);
+const imageFilter = function (req, file, cb) {
+    // accept image only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+        return cb(new Error("Only image files are allowed!"), false);
+    }
+    cb(null, true);
+};
 let UploadController = class UploadController {
-    add(file, req) {
+    add(file, req, res) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             common_1.$log.info("in adding an image", file);
             try {
-                const pos = file.path.lastIndexOf(".");
-                const showFile = file.path.substr(0, pos < 0 ? file.path.length : pos) + ".jpg";
+                // const pos = file.path.lastIndexOf(".");
+                // const showFile = file.path.substr(0, pos < 0 ? file.path.length : pos) + ".jpg";
                 // file.originalname.substr(file.originalname.lastIndexOf("."), file.originalname.length);
-                yield rename(file.path, `${process.env.IMAGEDIR || "/images"}/${file.filename}.jpg`);
+                // await rename(file.path, `${process.env.IMAGEDIR}/${file.originalname}`);
                 // const fileContent = readFileSync(showFile);
                 // const fileUpload = `${req.email}/${file.originalname}`;
                 //!needs to fix and rename this,after this think why iti was not working
-                common_1.$log.info("file uploaded", showFile);
+                // $log.info("file uploaded", showFile);
                 // bucket.
-                const result = yield firebase_1.bucket.upload(showFile, { contentType: file.mimetype, public: true });
+                // const result = await bucket.upload(showFile, {contentType: file.mimetype, public: true, gzip: true, metadata: metadata});
                 return {
                     success: 1,
                     file: {
-                        url: result[0].baseUrl,
+                        url: `http://10.100.25.59:8081/images/${file.filename}`,
                     },
                 };
             }
@@ -63,10 +81,20 @@ let UploadController = class UploadController {
 tslib_1.__decorate([
     common_1.Post("/upload"),
     passport_1.Authorize("jwt"),
-    multipartfiles_1.MulterOptions({ dest: process.env.IMAGEDIR || `/images` }),
-    tslib_1.__param(0, multipartfiles_1.MultipartFile()), tslib_1.__param(1, common_1.Req("account")),
+    multipartfiles_1.MulterOptions({
+        storage: multer_1.diskStorage({
+            destination: (req, file, cb) => {
+                cb(null, process.env.IMAGEDIR || `/images`);
+            },
+            filename: (req, file, cb) => {
+                cb(null, Date.now() + ".jpg");
+            },
+        }),
+        fileFilter: imageFilter,
+    }),
+    tslib_1.__param(0, multipartfiles_1.MultipartFile()), tslib_1.__param(1, common_1.Req("account")), tslib_1.__param(2, common_1.Res()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Object, User_1.User]),
+    tslib_1.__metadata("design:paramtypes", [Object, User_1.User, Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], UploadController.prototype, "add", null);
 tslib_1.__decorate([

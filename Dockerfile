@@ -21,6 +21,7 @@ COPY package.json .
 COPY yarn.lock .
 COPY ./src ./src
 COPY ./dist ./dist
+# COPY service.json .
 RUN yarn install --production
 # RUN yarn build
 
@@ -29,8 +30,8 @@ RUN yarn install --production
 EXPOSE 8081
 ENV PORT 8081
 ENV NODE_ENV production
-ENV DEFAULT_URL mongodb://lotus:tj.Vnp*J52w69r_g@172.18.0.3:27017/blogs?authSource=admin
-ENV KEY AKIAIEEHCD4AY4WCCKEA
-ENV ACCESS 9e5mPmelryEL30ZnSnE7Yig+u8XVzx0raMXqB126
+ENV DEFAULT_URL mongodb://lotus:tj.Vnp*J52w69r_g@172.25.0.2:27017/blogs?authSource=admin
 ENV IMAGEDIR=/var/tools/public/images
+
+
 CMD ["yarn", "start:prod"]
