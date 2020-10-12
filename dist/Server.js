@@ -73,7 +73,7 @@ Server = tslib_1.__decorate([
             "/images": [
                 {
                     root: `${process.env.IMAGEDIR || exports.rootDir}/`,
-                    cacheControl: true,
+                    // cacheControl: true,
                     extensions: [".jpg", ".png"],
                     setHeaders: (res, path, stat) => {
                         common_1.$log.info("in checking for images", path);

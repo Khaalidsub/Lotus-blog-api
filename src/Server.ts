@@ -26,6 +26,7 @@ export const rootDir = __dirname;
 
         // cacheControl: true,
         extensions: [".jpg", ".png"],
+        
         setHeaders: (res, path, stat) => {
           $log.info("in checking for images", path);
 

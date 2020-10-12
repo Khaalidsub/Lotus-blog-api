@@ -24,12 +24,16 @@ export class UploadController {
       },
     }),
     fileFilter: imageFilter,
+    limits: {
+      fieldSize: 10000 * 5000,
+    },
   })
   async add(@MultipartFile() file: Express.Multer.File): Promise<any> {
     return {
       success: 1,
       file: {
         url: `https://www.lotus-blogs-api.xyz/images/${file.filename}`,
+        // url: `http://10.100.25.59:8081/images/${file.filename}`,
       },
     };
   }
