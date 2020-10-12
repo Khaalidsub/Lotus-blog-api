@@ -21,9 +21,6 @@ services:
     image: "mongo:4.4"
     container_name: mongodb
     restart: always
-    # environment:
-    #   MONGO_INITDB_ROOT_USERNAME: lotus
-    #   MONGO_INITDB_ROOT_PASSWORD: tj.Vnp*J52w69r_g
     volumes:
       - /data/db:/mongodat
     ports:
