@@ -2,7 +2,7 @@ FROM node:12.13.0-alpine As development
 
 RUN apk update && apk add build-base git python
 
-WORKDIR /usr/src/app
+
 
 COPY package.json .
 COPY yarn.lock .
@@ -17,7 +17,7 @@ FROM node:12.13.0-alpine as production
 
 RUN apk update && apk add build-base git python
 
-WORKDIR /usr/src/app
+
 
 COPY package.json ./
 
