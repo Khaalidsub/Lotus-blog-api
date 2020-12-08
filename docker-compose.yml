@@ -15,11 +15,13 @@ services:
       - /var/tools/public:/var/tools/public
     ports:
       - "8081:8081"
+    depends_on:
+      - mongo
     stdin_open: true
     tty: true
-  mongodb:
+  mongo:
     image: "mongo:4.4"
-    container_name: mongodb
+    container_name: mongo
     restart: always
     volumes:
       - /data/db:/mongodat
