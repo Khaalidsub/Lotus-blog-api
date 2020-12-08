@@ -26,7 +26,7 @@ export const rootDir = __dirname;
 
         // cacheControl: true,
         extensions: [".jpg", ".png"],
-        
+
         setHeaders: (res, path, stat) => {
           $log.info("in checking for images", path);
 
@@ -38,7 +38,6 @@ export const rootDir = __dirname;
   },
   acceptMimes: ["application/json"],
   httpPort: process.env.PORT || 8083,
-  httpsPort: 8081, // CHANGE
 
   componentsScan: [
     `${rootDir}/protocols/**/*.ts`,
@@ -88,23 +87,6 @@ export class Server {
           extended: true,
         })
       );
-    this.app.raw.use(
-      session({
-        resave: true,
-        name: "app",
-        // proxy: true,
-        secret: "mysecretkey",
-        saveUninitialized: false,
-        store: new MongoStore({url: process.env.DEFAULT_URL || "mongodb://localhost:27017/default", ttl: 14 * 24 * 60 * 60}),
-        cookie: {
-          path: "/",
-          httpOnly: false,
-
-          secure: false,
-          maxAge: 36000 * 60 * 24,
-        },
-      })
-    );
 
     return null;
   }

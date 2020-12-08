@@ -1,5 +1,7 @@
 ### Node template
 .DS_Store
+
+dist
 # Logs
 logs
 *.log

@@ -1,1 +1,0 @@
-{"version":3,"file":"IService.js","sourceRoot":"","sources":["../../src/services/IService.ts"],"names":[],"mappings":"","sourcesContent":["export interface IService<T> {\r\n  add(obj: T): any;\r\n  find(query: any): any;\r\n  findById(id: String): any;\r\n  set(obj: T): any;\r\n  delete(id: String): Promise<boolean>;\r\n}\r\n"]}
