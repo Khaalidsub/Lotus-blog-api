@@ -3,7 +3,6 @@ FROM node:12.13.0-alpine As development
 RUN apk update && apk add build-base git python
 
 
-
 COPY package.json .
 COPY yarn.lock .
 
@@ -33,6 +32,6 @@ ENV NODE_ENV production
 
 ENV IMAGEDIR=/var/tools/public/images
 
-COPY --from=development /usr/src/app/dist ./dist 
+COPY --from=development ./dist ./dist 
 
 CMD ["node", "dist/index"]

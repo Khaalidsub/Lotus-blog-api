@@ -53,5 +53,5 @@ test/**/*.js.map
 # Project
 /public
 
-
+./data
 

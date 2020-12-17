@@ -4,12 +4,12 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-      args:
-        - http_proxy
-        - https_proxy
-        - no_proxy
-    image: "ts-ed-test/server:latest"
+    image: "khaalidsub/server:latest"
     container_name: blogs
+    environment:
+      - USER=lotus
+      - PASS=tj.Vnp*J52w69r_g
+      - DB=mongo
     volumes:
       - /var/tools/public/images:/var/tools/public/images
       - /var/tools/public:/var/tools/public
@@ -24,7 +24,12 @@ services:
     container_name: mongo
     restart: always
     volumes:
-      - /data/db:/mongodat
+      - /data/db
+      - ./init-monog.js/:/docker-entrypoint-initdb.d
     ports:
       - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=lotus
+      - MONGO_INITDB_ROOT_PASSWORD=tj.Vnp*J52w69r_g
+      - MONGO_INITDB_DATABASE=blogs
     command: [--auth]
