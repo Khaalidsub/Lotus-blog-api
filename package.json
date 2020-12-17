@@ -8,8 +8,6 @@
     "tsc:w": "tsc --project tsconfig.json -w",
     "start": "@powershell -Command $env:DEBUG='express-session'; nodemon --watch \"src/**/*.ts\" --ignore \"node_modules/**/*\" --exec ts-node src/index.ts",
     "start:prod": "cross-env NODE_ENV=production node dist/index.js",
-    "test:lint": "eslint src --ext .ts",
-    "test:lint:fix": "eslint src --ext .ts --fix",
     "prettier": "prettier '{src,test}/**/*.ts' --write"
   },
   "dependencies": {
