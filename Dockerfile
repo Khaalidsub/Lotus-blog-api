@@ -1,12 +1,3 @@
-FROM mongo:4.4
-ENV MONGO_INITDB_ROOT_USERNAME=lotus
-ENV MONGO_INITDB_ROOT_PASSWORD=tj.Vnp*J52w69r_g
-RUN mkdir -p /data/db \
-    && echo "dbpath = /data/db" > /etc/mongodb.conf
-
-RUN command
-VOLUME [ "/data/db" ]
-
 
 FROM node:12.13.0-alpine As development
 
