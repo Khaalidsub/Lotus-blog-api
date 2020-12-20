@@ -4,24 +4,24 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    image: "khaalidsub/server:latest"
+    image: "sleepinglotus/subaan-blogs-api"
     container_name: blogs
     environment:
       - USER=lotus
-      - PASS=tj.Vnp*J52w69r_g
-      - DB=mongo
+      - PASS=123
+      - DB=mongodb
     volumes:
       - /var/tools/public/images:/var/tools/public/images
       - /var/tools/public:/var/tools/public
     ports:
       - "8081:8081"
     depends_on:
-      - mongo
+      - mongodb
     stdin_open: true
     tty: true
-  mongo:
+  mongodb:
     image: "mongo:4.4"
-    container_name: mongo
+    container_name: mongodb
     restart: always
     volumes:
       - /data/db
@@ -30,6 +30,6 @@ services:
       - "27017:27017"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=lotus
-      - MONGO_INITDB_ROOT_PASSWORD=tj.Vnp*J52w69r_g
+      - MONGO_INITDB_ROOT_PASSWORD=123g
       - MONGO_INITDB_DATABASE=blogs
     command: [--auth]

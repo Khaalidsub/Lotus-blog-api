@@ -1,0 +1,18 @@
+version: "3.3"
+services:
+  server:
+    image: "sleepinglotus/subaan-blogs-api"
+    container_name: blogs
+    environment:
+      - USER=lotus
+      - PASS=123
+      - DB=mongodb
+    volumes:
+      - /var/tools/public/images:/var/tools/public/images
+      - /var/tools/public:/var/tools/public
+    ports:
+      - "8081:8081"
+networks:
+  default:
+    external:
+      name: blogs-api_default
