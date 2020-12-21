@@ -35,15 +35,11 @@ export class LoginLocalProtocol implements OnVerify, OnInstall {
     }
 
     $log.info("logged:", user);
-    // sessionUser = user;
 
     const token = sign(user.id, "app");
     $log.info("this is token", token);
     return token;
   }
 
-  $onInstall(strategy: Strategy): void {
-    // $log.info("strategory", strategy);
-    // intercept the strategy instance to adding extra configuration
-  }
+  $onInstall(strategy: Strategy): void {}
 }

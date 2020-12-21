@@ -5,7 +5,7 @@ import {User} from "../models/User";
 import {PostService} from "../services/PostService";
 import {Post as Posts} from "../models/Post";
 import {log} from "console";
-// export const tempId = "5f549bc077ff7458309f1b5c";
+
 @Controller("")
 export class UserController {
   constructor(@Inject(UserService) public userService: UserService, @Inject(PostService) private service: PostService) {}
@@ -30,11 +30,6 @@ export class UserController {
   @Authorize("jwt")
   async getSession(@Req("account") req: User) {
     try {
-      // const user = req.user || {id: null};
-      // $log.info(req.session);
-      // return user;
-      // const user = await this.userService.findById(tempId);
-      // $log.info("session", req);
       req.password = "";
       return req;
     } catch (error) {

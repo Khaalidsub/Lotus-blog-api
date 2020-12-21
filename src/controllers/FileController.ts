@@ -33,7 +33,6 @@ export class UploadController {
       success: 1,
       file: {
         url: `https://www.lotus-blogs-api.xyz/images/${file.filename}`,
-        // url: `http://10.100.25.59:8081/images/${file.filename}`,
       },
     };
   }

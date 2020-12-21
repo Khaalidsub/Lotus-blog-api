@@ -1,7 +1,8 @@
 import {Property, Default} from "@tsed/common";
 import {Model, MongoosePlugin, ObjectID} from "@tsed/mongoose";
-import {autoPopulateAllFields, IModel} from "./IModel";
+import {IModel} from "./IModel";
 import {compare} from "bcrypt";
+import {autoPopulateAllFields} from "mongoose-autopopulator";
 @Model()
 @MongoosePlugin(autoPopulateAllFields)
 export class User implements IModel {

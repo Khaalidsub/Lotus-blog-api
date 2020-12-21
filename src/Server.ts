@@ -10,9 +10,6 @@ import * as cors from "cors";
 import "@tsed/ajv";
 import "@tsed/mongoose";
 import mongooseConfig from "./config/mongoose";
-import * as session from "express-session";
-import * as Mongo from "connect-mongo";
-const MongoStore = Mongo(session);
 import {User} from "./models/User";
 
 export const rootDir = __dirname;

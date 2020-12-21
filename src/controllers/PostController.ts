@@ -4,7 +4,6 @@ import {PostService} from "../services/PostService";
 import {Authorize} from "@tsed/passport";
 import {User} from "../models/User";
 import {UserService} from "../services/UserService";
-// import {tempId} from "./AuthController";
 
 @Controller("/posts")
 export class PostController {
@@ -32,8 +31,6 @@ export class PostController {
   @Post()
   @Authorize("jwt")
   async add(@BodyParams() post: Posts) {
-    // post.user = req._id;
-    // post.user = tempId;
     $log.info(post);
     const newPost = await this.service.add(post);
     return newPost;

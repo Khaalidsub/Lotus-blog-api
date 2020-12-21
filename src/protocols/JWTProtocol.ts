@@ -10,18 +10,14 @@ import {UserService} from "../services/UserService";
   settings: {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: "app",
-    // issuer: "accounts.examplesoft.com",
-    // audience: "yoursite.net"
   },
 })
 export class JwtProtocol implements OnVerify {
   constructor(@Inject(UserService) public usersService: UserService) {}
 
   async $onVerify(@Req() req: Req, @Arg(0) jwtPayload: any) {
-    // $log.info("i am here", jwtPayload);
     const user = await this.usersService.findOne({_id: jwtPayload});
-    // $log.info("found", user);
-    // user?.password = undefined
+
     return user ? user : false;
   }
 }
