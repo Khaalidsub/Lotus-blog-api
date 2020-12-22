@@ -2,6 +2,6 @@
 set -e
 ssh-keyscan -H $IP >>~/.ssh/known_hosts
 
-ls
+scp ./docker-compose.prod.yml $USER@$IP:.
 
-ssh $USER@$IP echo "docker pull sleepinglotus/subaan-blogs-api;"
+ssh $USER@$IP echo "docker-compose -f docker-compose.prod.yml up -d; docker network inspect blogs-api_default"

@@ -8,6 +8,10 @@ before_install:
   - cp .travis/id_rsa ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
   - ssh-add ~/.ssh/id_rsa
+before_deploy:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker build -t sleepinglotus/subaan-blogs-api .
+  - docker push sleepinglotus/subaan-blogs-api
 deploy:
   - provider: script
     skip_cleanup: true
