@@ -8,11 +8,6 @@ before_install:
   - cp .travis/id_rsa ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
   - ssh-add ~/.ssh/id_rsa
-script:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker-compose up -d
-after_success:
-  - docker-compose push
 deploy:
   - provider: script
     skip_cleanup: true
