@@ -1,22 +1,17 @@
 sudo: required
 language: generic
-
 services:
   - docker
-
-# script:
-#   - docker-compose up -d
-
-before_deploy:
-  - openssl aes-256-cbc -K $encrypted_f217180e22ee_key -iv $encrypted_f217180e22ee_iv -in id_rsa.enc -out id_rsa -d
+before_install:
+  - openssl aes-256-cbc -K $encrypted_f217180e22ee_key -iv $encrypted_f217180e22ee_iv
+    -in id_rsa.enc -out id_rsa -d
   - eval "$(ssh-agent -s)"
   - cp .travis/id_rsa ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
   - ssh-add ~/.ssh/id_rsa
-
 deploy:
   - provider: script
     skip_cleanup: true
-    script: bash deploy.sh
+    script: bash ./deploy.sh
     on:
       repo: Khaalidsub/Lotus-blog-api

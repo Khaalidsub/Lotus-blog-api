@@ -1,5 +1,14 @@
 version: "3.3"
 services:
+  web:
+    image: "sleepinglotus/lotus-blogs-client"
+    container_name: blogs-client
+    environment:
+      - API=server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
   server:
     image: "sleepinglotus/subaan-blogs-api"
     container_name: blogs
@@ -14,5 +23,5 @@ services:
       - "8081:8081"
 networks:
   default:
-    external:
-      name: blogs-api_default
+    # external:
+    name: blogs-api_default
