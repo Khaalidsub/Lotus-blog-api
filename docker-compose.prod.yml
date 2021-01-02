@@ -24,4 +24,4 @@ services:
 networks:
   default:
     external:
-      - name: blogs-api_default
+      name: blogs-api_default
