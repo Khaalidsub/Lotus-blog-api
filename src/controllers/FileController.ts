@@ -32,7 +32,7 @@ export class UploadController {
     return {
       success: 1,
       file: {
-        url: `https://www.lotus-blogs-api.xyz/images/${file.filename}`,
+        url: `images/${file.filename}`,
       },
     };
   }
