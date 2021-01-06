@@ -17,7 +17,7 @@ export class UploadController {
   @MulterOptions({
     storage: diskStorage({
       destination: (req, file, cb) => {
-        cb(null, process.env.IMAGEDIR || `/images`);
+        cb(null, `${process.env.IMAGEDIR}` || `/images`);
       },
       filename: (req, file, cb) => {
         cb(null, Date.now() + ".jpg");
@@ -32,7 +32,7 @@ export class UploadController {
     return {
       success: 1,
       file: {
-        url: `images/${file.filename}`,
+        url: `${process.env.URL}images/${file.filename}`,
       },
     };
   }

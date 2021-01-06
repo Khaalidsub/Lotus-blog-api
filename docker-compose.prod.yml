@@ -1,6 +1,8 @@
 version: "3.3"
 services:
   nginx:
+    image: "sleepinglotus/lotus-blogs-nginx"
+    container_name: nginx
     depends_on:
       - api
       - client
@@ -9,7 +11,7 @@ services:
       dockerfile: Dockerfile
       context: ./nginx
     volumes:
-      - /var/tools/public:/var/tools/public
+      - ~/var/tools/public:/var/tools/public
     ports:
       - "3050:80"
   client:
@@ -22,27 +24,30 @@ services:
     depends_on:
       - api
   api:
-    image: "sleepinglotus/subaan-blogs-api"
-    container_name: blogs
+    image: "sleepinglotus/lotus-blogs-api"
+    container_name: blogs-api
     environment:
       - USER=lotus
       - PASS=tj.Vnp*J52w69r_g
       - DB=mongo
+      - IMAGEDIR=/var/tools/public/images
+      - URL=http://localhost:3050/
     volumes:
-      - /var/tools/public/images:/var/tools/public/images
-      - /var/tools/public:/var/tools/public
+      - ~/var/tools/public/images:/var/tools/public/images
     ports:
       - "8081:8081"
     depends_on:
       - mongodb
   mongodb:
-    image: "sleepinglotus/chat-mongodb"
+    image: "sleepinglotus/blogs-mongodb"
     container_name: mongo
     restart: always
+    volumes:
+      - ~/mongodb:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=lotus
       - MONGO_INITDB_ROOT_PASSWORD=tj.Vnp*J52w69r_g
       - MONGO_INITDB_DATABASE=blogs
 networks:
   default:
-    name: blogs-api_default
+    name: lotus-blogs_default

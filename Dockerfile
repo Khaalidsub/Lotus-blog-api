@@ -31,7 +31,6 @@ EXPOSE 8081
 ENV PORT 8081
 ENV NODE_ENV production
 
-ENV IMAGEDIR=/var/tools/public/images
 
 COPY --from=development ./dist ./dist 
 
