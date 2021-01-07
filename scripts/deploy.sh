@@ -6,12 +6,15 @@
 
 # ssh $USER@$IP echo "docker-compose -f ./docker-compose.prod.yml up -d --build; docker network inspect lotus-blogs_default_default"
 
+# 1 ==> file for docker to compose
+# 2 ==> domain name
+
 ## install softwares
 function installSoftware() {
     sudo apt install $1
 }
 function checkFirewallStatus() {
-
+    echo "Checking if ufw is enabled..."
     case "$(systemctl is-active ufw)" in
     active) echo "ufw is active" ;;
     inactive) sudo systemctl enable ufw ;; echo "ufw is active now" ;;
@@ -37,6 +40,7 @@ function installDocker(){
     sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 }
 function checkDockerStatus(){
+    echo "Checking if docker exists..."
     case "$(systemctl is-active docker)" in
     active) echo "docker already exists" ;;
     inactive) installDocker ; systemctl start docker; systemctl enable docker; docker --version  ;;
@@ -45,6 +49,7 @@ esac
 }
 
 function composeImages(){
+     echo "Composing your amazing images..."
     if [[ -e $1]]
     then
         docker-compose -f $1 up -d
@@ -54,14 +59,26 @@ function composeImages(){
         return 1
     fi
 }
+function checkCertBot(){
+    echo "Checking for any certificates..."
+    CERTBOT="certbot run -n --nginx --agree-tos -d $1 ,www.$1  -m  khaalidsubaan@gmail.com  --redirect"
+
+    if [[ -e ~/ect/letsencrypt/live/$1/cert.pem ]]
+    then
+        echo "the website has already been certified"
+    else
+        docker exec -it nginx sh -c "$CERTBOT; exit;"
+    fi
+}
 
 checkFirewallStatus
 checkDockerStatus
 composeImages $1
+checkCertBot $2 
 # TASKS
 # create scripts that generates the ssh and stores to the server - done
 # create scripts that enables firewall and the initial software i.e docker -done
 # script that deploys the project -done
-# script that creates ssl certificate from certbot
+# script that creates ssl certificate from certbot -done
 # script that imports the data from the previous db
 # script that backups the database

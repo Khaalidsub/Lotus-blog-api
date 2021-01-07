@@ -12,8 +12,9 @@ services:
       context: ./nginx
     volumes:
       - ~/var/tools/public:/var/tools/public
+      - ~/etc/letsencrypt:/etc/letsencrypt
     ports:
-      - "3050:80"
+      - 80:80
   client:
     image: "sleepinglotus/lotus-blogs-front"
     container_name: blogs-client
