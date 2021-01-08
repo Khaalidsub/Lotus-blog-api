@@ -10,11 +10,11 @@ before_install:
   - ssh-add ~/.ssh/id_rsa
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker build -t sleepinglotus/subaan-blogs-api .
-  - docker push sleepinglotus/subaan-blogs-api
-deploy:
-  - provider: script
-    skip_cleanup: true
-    script: bash ./deploy.sh
-    on:
-      repo: Khaalidsub/Lotus-blog-api
+  - docker-compose up -d --build
+  - docker-compose push
+# deploy:
+#   - provider: script
+#     skip_cleanup: true
+#     script: bash ./deploy.sh
+#     on:
+#       repo: Khaalidsub/Lotus-blog-api
