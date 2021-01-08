@@ -54,4 +54,6 @@ test/**/*.js.map
 /public
 
 ./data
+backup/*
+
 

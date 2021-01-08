@@ -1,35 +1,57 @@
 version: "3.3"
 services:
-  server:
+  nginx:
+    image: "sleepinglotus/lotus-blogs-nginx"
+    container_name: nginx
+    depends_on:
+      - api
+      - client
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    volumes:
+      - ~/var/tools/public:/var/tools/public
+      - ~/etc/letsencrypt:/etc/letsencrypt
+    ports:
+      - 80:80
+  client:
+    image: "sleepinglotus/lotus-blogs-front"
+    container_name: blogs-client
+    environment:
+      - SERVER=server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+  api:
+    image: "sleepinglotus/lotus-blogs-api"
     build:
       context: .
       dockerfile: ./Dockerfile
-    image: "sleepinglotus/subaan-blogs-api"
-    container_name: blogs
+    container_name: blogs-api
     environment:
       - USER=lotus
-      - PASS=123
-      - DB=mongodb
+      - PASS=tj.Vnp*J52w69r_g
+      - DB=mongo
+      - IMAGEDIR=/var/tools/public/images
+      - URL=https://lotus-blogs.com/
     volumes:
-      - /var/tools/public/images:/var/tools/public/images
-      - /var/tools/public:/var/tools/public
+      - ~/var/tools/public/images:/var/tools/public/images
     ports:
       - "8081:8081"
     depends_on:
       - mongodb
-    stdin_open: true
-    tty: true
   mongodb:
-    image: "mongo:4.4"
-    container_name: mongodb
+    image: "sleepinglotus/blogs-mongodb"
+    container_name: mongo
+    build:
+      context: ./mongo
+      dockerfile: ./Dockerfile
     restart: always
     volumes:
-      - /data/db
-      - ./init-monog.js/:/docker-entrypoint-initdb.d
-    ports:
-      - "27017:27017"
+      - ~/mongodb:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=lotus
-      - MONGO_INITDB_ROOT_PASSWORD=123g
+      - MONGO_INITDB_ROOT_PASSWORD=tj.Vnp*J52w69r_g
       - MONGO_INITDB_DATABASE=blogs
-    command: [--auth]

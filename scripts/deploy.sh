@@ -15,9 +15,13 @@ function installSoftware() {
 }
 function checkFirewallStatus() {
     echo "Checking if ufw is enabled..."
+    sudo ufw enable
+    ufw allow ssh 
+    ufw allow https
+    ufw allow http
     case "$(systemctl is-active ufw)" in
     active) echo "ufw is active" ;;
-    inactive) sudo systemctl enable ufw ;; echo "ufw is active now" ;;
+    inactive) sudo systemctl enable ufw ; echo "ufw is active now" ;;
     *) echo "unkown status" ;;
 esac
 }
@@ -28,7 +32,7 @@ function installDocker(){
     ca-certificates \
     curl \
     gnupg-agent \
-    software-properties-common
+    software-properties-common -y
 
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     sudo apt-key fingerprint 0EBFCD88
@@ -38,6 +42,7 @@ function installDocker(){
     stable"
     sudo apt-get update
     sudo apt-get install docker-ce docker-ce-cli containerd.io -y
+    apt  install docker-compose -y
 }
 function checkDockerStatus(){
     echo "Checking if docker exists..."
@@ -49,25 +54,26 @@ esac
 }
 
 function composeImages(){
+    docker login
      echo "Composing your amazing images..."
-    if [[ -e $1]]
-    then
+    # if [[ -e $1]]
+    # then
         docker-compose -f $1 up -d
-        return 0
-    else
-        echo "file $1 for docker to compose does not exist"
-        return 1
-    fi
+        # return 0
+    # else
+    #     echo "file $1 for docker to compose does not exist"
+    #     return 1
+    # fi
 }
 function checkCertBot(){
     echo "Checking for any certificates..."
-    CERTBOT="certbot run -n --nginx --agree-tos -d $1 ,www.$1  -m  khaalidsubaan@gmail.com  --redirect"
+    CERTBOT="certbot run -n --nginx --agree-tos -d $1  -d www.$1  -m  khaalidsubaan@gmail.com  --redirect"
 
     if [[ -e ~/ect/letsencrypt/live/$1/cert.pem ]]
     then
         echo "the website has already been certified"
     else
-        docker exec -it nginx sh -c "$CERTBOT; exit;"
+        docker exec -it nginx sh -c "$CERTBOT;"
     fi
 }
 
