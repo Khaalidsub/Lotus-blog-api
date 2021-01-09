@@ -15,10 +15,10 @@ function installSoftware() {
 }
 function checkFirewallStatus() {
     echo "Checking if ufw is enabled..."
-    sudo ufw enable
-    ufw allow ssh 
-    ufw allow https
-    ufw allow http
+    # sudo ufw enable
+    # ufw allow ssh 
+    # ufw allow https
+    # ufw allow http
     case "$(systemctl is-active ufw)" in
     active) echo "ufw is active" ;;
     inactive) sudo systemctl enable ufw ; echo "ufw is active now" ;;
@@ -58,7 +58,7 @@ function composeImages(){
      echo "Composing your amazing images..."
     # if [[ -e $1]]
     # then
-        docker-compose -f $1 up -d
+        docker-compose -f $1 up -d --build
         # return 0
     # else
     #     echo "file $1 for docker to compose does not exist"

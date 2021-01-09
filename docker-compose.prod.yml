@@ -9,9 +9,11 @@ services:
     restart: always
     volumes:
       - ~/var/tools/public:/var/tools/public
+      - ./production.conf:/etc/nginx/conf.d/default.conf
       - ~/etc/letsencrypt:/etc/letsencrypt
     ports:
       - 80:80
+      - 443:443
   client:
     image: "sleepinglotus/lotus-blogs-front:latest"
     container_name: blogs-client
@@ -29,7 +31,7 @@ services:
       - PASS=tj.Vnp*J52w69r_g
       - DB=mongo
       - IMAGEDIR=/var/tools/public/images
-      - URL=https://lotus-blogs.com/
+      - URL=https://lotusblogs.com/
     volumes:
       - ~/var/tools/public/images:/var/tools/public/images
     ports:
