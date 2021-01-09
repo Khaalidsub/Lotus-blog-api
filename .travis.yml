@@ -5,9 +5,9 @@ services:
 before_install:
   - openssl aes-256-cbc -K $encrypted_917f31f50c0f_key -iv $encrypted_917f31f50c0f_iv -in .travis/lotus-blogs.enc -out .travis/lotus-blogs -d
   - eval "$(ssh-agent -s)"
-  - cp .travis/lotus-blogs ~/.ssh/id_rsa
-  - chmod 600 ~/.ssh/id_rsa
-  - ssh-add ~/.ssh/id_rsa
+  - cp .travis/lotus-blogs ~/.ssh/lotus-blogs
+  - chmod 600 ~/.ssh/lotus-blogs
+  - ssh-add ~/.ssh/lotus-blogs
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker-compose -f docker-compose.dev.yml up -d --build
