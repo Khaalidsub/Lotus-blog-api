@@ -8,11 +8,13 @@ before_install:
   - cp .travis/lotus-blogs ~/.ssh/lotus-blogs
   - chmod 600 ~/.ssh/lotus-blogs
   - ssh-add ~/.ssh/lotus-blogs
+  - scp -i ~/.ssh/lotus-blogs ./scripts/dockerPull.sh $USER@$IP:./dockerPull.sh
+  - scp -i ~/.ssh/lotus-blogs nginx/production.conf $USER@$IP:./production.conf
+  - scp -i ~/.ssh/lotus-blogs ./docker-compose.yml $USER@$IP:./docker-compose.conf
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker-compose -f docker-compose.dev.yml up -d --build
   - docker-compose push
-  - chmod 755 ./scripts/dockerPull.sh
 deploy:
   - provider: script
     skip_cleanup: true
