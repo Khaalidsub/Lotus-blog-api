@@ -3,18 +3,18 @@ language: generic
 services:
   - docker
 before_install:
-  - openssl aes-256-cbc -K $encrypted_f217180e22ee_key -iv $encrypted_f217180e22ee_iv -in .travis/id_rsa.enc -out .travis/id_rsa -d
+  - openssl aes-256-cbc -K $encrypted_917f31f50c0f_key -iv $encrypted_917f31f50c0f_iv -in .travis/lotus-blogs.enc -out .travis/lotus-blogs -d
   - eval "$(ssh-agent -s)"
-  - cp .travis/id_rsa ~/.ssh/id_rsa
+  - cp .travis/lotus-blogs ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
   - ssh-add ~/.ssh/id_rsa
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker-compose up -d --build
+  - docker-compose -f docker-compose.dev.yml up -d --build
   - docker-compose push
-# deploy:
-#   - provider: script
-#     skip_cleanup: true
-#     script: bash ./deploy.sh
-#     on:
-#       repo: Khaalidsub/Lotus-blog-api
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: bash ./scripts/deploy.sh ./docker-compose.yml
+    on:
+      repo: Khaalidsub/Lotus-blog-api
