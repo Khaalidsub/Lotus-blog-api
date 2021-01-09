@@ -10,4 +10,4 @@
 ssh-keyscan -H $IP >>~/.ssh/known_hosts
 scp ./scripts/dockerPull.sh $USER@$IP:./dockerPull.sh
 scp ./nginx/production.conf $USER@$IP:./production.conf
-scp $1    $USER@$IP:./docker-compose.yml && ssh $USER@$IP  ./dockerPull.sh
+scp $1    $USER@$IP:./docker-compose.yml && ssh $USER@$IP  "./dockerPull.sh"

@@ -12,6 +12,7 @@ before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker-compose -f docker-compose.dev.yml up -d --build
   - docker-compose push
+  - chmod 755 ./scripts/dockerPull.sh
 deploy:
   - provider: script
     skip_cleanup: true
