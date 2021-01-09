@@ -1,20 +1,22 @@
 version: "3.3"
 services:
   nginx:
-    image: "sleepinglotus/lotus-blogs-nginx:latest"
+    image: "sleepinglotus/lotus-blogs-nginx"
     container_name: nginx
     depends_on:
       - api
       - client
     restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
     volumes:
       - ~/var/tools/public:/var/tools/public
       - ~/etc/letsencrypt:/etc/letsencrypt
     ports:
       - 80:80
-      - 443:443
   client:
-    image: "sleepinglotus/lotus-blogs-front:latest"
+    image: "sleepinglotus/lotus-blogs-front"
     container_name: blogs-client
     environment:
       - SERVER=server
@@ -23,7 +25,10 @@ services:
     depends_on:
       - api
   api:
-    image: "sleepinglotus/lotus-blogs-api:latest"
+    image: "sleepinglotus/lotus-blogs-api"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     container_name: blogs-api
     environment:
       - USER=lotus
@@ -40,6 +45,9 @@ services:
   mongodb:
     image: "sleepinglotus/blogs-mongodb"
     container_name: mongo
+    build:
+      context: ./mongo
+      dockerfile: ./Dockerfile
     restart: always
     volumes:
       - ~/mongodb:/data/db
