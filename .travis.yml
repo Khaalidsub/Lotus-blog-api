@@ -11,7 +11,9 @@ before_install:
   - ssh-keyscan -H $IP >>~/.ssh/known_hosts
   - scp -i ~/.ssh/lotus-blogs ./scripts/dockerPull.sh $USER@$IP:./dockerPull.sh
   - scp -i ~/.ssh/lotus-blogs nginx/production.conf $USER@$IP:./production.conf
-  - scp -i ~/.ssh/lotus-blogs ./docker-compose.yml $USER@$IP:./docker-compose.conf
+  - scp -i ~/.ssh/lotus-blogs ./docker-compose.yml $USER@$IP:./docker-compose.yml
+  - ssh -i ~/.ssh/lotus-blogs $USER@$IP "chmod 755 ./dockerPull.sh"
+  - ssh -i ~/.ssh/lotus-blogs $USER@$IP "chmod 755 ./docker-compose.yml"
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker-compose -f docker-compose.dev.yml up -d --build
