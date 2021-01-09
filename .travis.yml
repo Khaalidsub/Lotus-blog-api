@@ -8,6 +8,7 @@ before_install:
   - cp .travis/lotus-blogs ~/.ssh/lotus-blogs
   - chmod 600 ~/.ssh/lotus-blogs
   - ssh-add ~/.ssh/lotus-blogs
+  - ssh-keyscan -H $IP >>~/.ssh/known_hosts
   - scp -i ~/.ssh/lotus-blogs ./scripts/dockerPull.sh $USER@$IP:./dockerPull.sh
   - scp -i ~/.ssh/lotus-blogs nginx/production.conf $USER@$IP:./production.conf
   - scp -i ~/.ssh/lotus-blogs ./docker-compose.yml $USER@$IP:./docker-compose.conf
